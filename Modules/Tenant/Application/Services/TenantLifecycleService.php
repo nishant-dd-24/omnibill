@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Modules\Tenant\Application\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Tenant\Domain\Events\TenantActivated;
+use Modules\Tenant\Domain\Events\TenantCancelled;
+use Modules\Tenant\Domain\Events\TenantSuspended;
 use Modules\Tenant\Domain\Models\Tenant;
 use Modules\Tenant\Domain\Services\TenantLifecycleStateMachine;
-
-// use Modules\Tenant\Domain\Events\TenantActivated; // Will add later
 
 class TenantLifecycleService
 {
@@ -22,7 +23,12 @@ class TenantLifecycleService
             $this->stateMachine->transitionTo($tenant, $newState);
             $tenant->save();
 
-            // Note: Domain events will be dispatched here in a later step
+            match ($newState) {
+                'Active' => TenantActivated::dispatch($tenant),
+                'Suspended' => TenantSuspended::dispatch($tenant),
+                'Cancelled' => TenantCancelled::dispatch($tenant),
+                default => null,
+            };
         });
     }
 }
