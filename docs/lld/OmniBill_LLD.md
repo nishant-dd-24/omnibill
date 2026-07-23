@@ -109,8 +109,8 @@ This section outlines the specific implementation responsibilities for each modu
 
 ### 3.1 Tenant Management
 - **Purpose:** Manage the lifecycle and configuration of OmniBill's tenants.
-- **Primary components:** `Tenant`, `TenantSettings`, `TenantPlanAssignment` Eloquent models.
-- **Internal workflow:** Relies on a state machine trait for `Pending -> Active -> PastDue -> Suspended -> Cancelled` transitions.
+- **Primary components:** `Tenant`, `TenantSettings`, `TenantPlanAssignment` Eloquent models. `TenantLifecycleStateMachine` (Domain Service).
+- **Internal workflow:** Relies on a state machine domain service for `Pending -> Active -> PastDue -> Suspended -> Cancelled` transitions.
 - **Interfaces:** `ResolveTenant` (used by middleware), `GetTenantSettings`.
 
 ### 3.2 Authentication & Authorization (Identity & Access)
@@ -161,7 +161,7 @@ This section outlines the specific implementation responsibilities for each modu
 
 ### 3.10 Shared Infrastructure
 - **Purpose:** Cross-cutting base classes and utilities.
-- **Primary components:** `TenantAwareJob`, `StructuredLogger`, `Money` Value Object.
+- **Primary components:** `TenantAwareJob`, `StructuredLogger`, `Money` Value Object, `OmniBillUser` (Authentication Contract).
 
 ---
 
