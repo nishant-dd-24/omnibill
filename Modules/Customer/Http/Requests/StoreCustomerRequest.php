@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Customer\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreCustomerRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'stripe_id' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+}
