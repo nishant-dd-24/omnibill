@@ -131,7 +131,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 ### Payments
 - [x] Database (Payments, PaymentAttempts)
 - [x] Models (`Payment`, `PaymentAttempt`)
-- [ ] Services (Transaction tracking, State machine driven by Webhooks)
+- [x] Services (Transaction tracking, State machine driven by Webhooks)
 - [ ] Events (`PaymentSucceeded`, `PaymentFailed`, `PaymentRefunded`)
 - [ ] Jobs (Dunning and Retry logic orchestration)
 - [ ] Tests (Unit, Feature)
