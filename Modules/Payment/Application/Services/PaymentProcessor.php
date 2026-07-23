@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Modules\Payment\Application\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Payment\Domain\Events\PaymentFailed;
+use Modules\Payment\Domain\Events\PaymentRefunded;
+use Modules\Payment\Domain\Events\PaymentSucceeded;
 use Modules\Payment\Domain\Models\Payment;
 use Modules\Payment\Domain\Services\PaymentStateMachine;
-
-// We will create these events in the next step
-// use Modules\Payment\Domain\Events\PaymentSucceeded;
-// use Modules\Payment\Domain\Events\PaymentFailed;
-// use Modules\Payment\Domain\Events\PaymentRefunded;
 
 class PaymentProcessor
 {
@@ -20,7 +18,7 @@ class PaymentProcessor
     ) {}
 
     /**
-     * @param array<string, mixed> $gatewayResponse
+     * @param  array<string, mixed>  $gatewayResponse
      */
     public function processWebhook(Payment $payment, string $status, array $gatewayResponse): void
     {
@@ -30,7 +28,7 @@ class PaymentProcessor
 
             $attemptNumber = $payment->attempts()->count() + 1;
 
-            $attempt = $payment->attempts()->create([
+            $payment->attempts()->create([
                 'tenant_id' => $payment->tenant_id,
                 'attempt_number' => $attemptNumber,
                 'status' => $status,
@@ -39,7 +37,6 @@ class PaymentProcessor
             ]);
 
             // Dispatch events based on status
-            /*
             if ($status === 'succeeded') {
                 event(new PaymentSucceeded($payment->id, $payment->tenant_id));
             } elseif ($status === 'failed') {
@@ -47,7 +44,6 @@ class PaymentProcessor
             } elseif ($status === 'refunded') {
                 event(new PaymentRefunded($payment->id, $payment->tenant_id));
             }
-            */
         });
     }
 }
