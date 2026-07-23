@@ -72,7 +72,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 - [x] Controllers (CRUD for tenants)
 - [x] Policies (Tenant access control)
 - [x] Events (`TenantActivated`, `TenantSuspended`, `TenantCancelled`)
-- [ ] Jobs (Data retention purge scheduler)
+- [x] Jobs (Data retention purge scheduler)
 - [ ] Tests (Unit, Feature, Arch)
 - [ ] Documentation updated
 
