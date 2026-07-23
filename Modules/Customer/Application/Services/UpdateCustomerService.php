@@ -9,7 +9,7 @@ use Modules\Customer\Domain\Models\Customer;
 class UpdateCustomerService
 {
     /**
-     * @param  array{name?: string, email?: string, stripe_id?: string|null}  $data
+     * @param  array<string, mixed>  $data
      */
     public function execute(Customer $customer, array $data): Customer
     {

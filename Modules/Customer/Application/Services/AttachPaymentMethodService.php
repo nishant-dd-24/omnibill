@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Customer\Application\Services;
 
+use Modules\Customer\Domain\Events\CustomerPaymentMethodAttached;
 use Modules\Customer\Domain\Models\Customer;
 use Modules\Customer\Domain\Models\PaymentMethod;
 
@@ -31,6 +32,8 @@ class AttachPaymentMethodService
             'exp_year' => $data['exp_year'] ?? null,
             'is_default' => $isDefault,
         ]);
+
+        CustomerPaymentMethodAttached::dispatch($customer, $paymentMethod);
 
         return $paymentMethod;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Customer\Domain\Models;
 
+use Database\Factories\PaymentMethodFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +14,9 @@ use Modules\Shared\Domain\Models\Traits\TenantScoped;
 
 class PaymentMethod extends Model
 {
-    /** @use HasFactory<\Database\Factories\PaymentMethodFactory> */
+    /** @use HasFactory<PaymentMethodFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
     use TenantScoped;
@@ -37,9 +39,9 @@ class PaymentMethod extends Model
         'exp_year' => 'integer',
     ];
 
-    protected static function newFactory(): \Database\Factories\PaymentMethodFactory
+    protected static function newFactory(): PaymentMethodFactory
     {
-        return \Database\Factories\PaymentMethodFactory::new();
+        return PaymentMethodFactory::new();
     }
 
     /**

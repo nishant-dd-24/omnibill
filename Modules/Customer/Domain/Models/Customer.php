@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Customer\Domain\Models;
 
+use Database\Factories\CustomerFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +14,9 @@ use Modules\Shared\Domain\Models\Traits\TenantScoped;
 
 class Customer extends Model
 {
-    /** @use HasFactory<\Database\Factories\CustomerFactory> */
+    /** @use HasFactory<CustomerFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
     use TenantScoped;
@@ -26,9 +28,9 @@ class Customer extends Model
         'stripe_id',
     ];
 
-    protected static function newFactory(): \Database\Factories\CustomerFactory
+    protected static function newFactory(): CustomerFactory
     {
-        return \Database\Factories\CustomerFactory::new();
+        return CustomerFactory::new();
     }
 
     /**
