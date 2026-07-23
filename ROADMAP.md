@@ -99,7 +99,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 
 ### Catalog & Settings (Plan, Pricing)
 - [x] Database (Plans, Prices)
-- [ ] Models (`Plan`, `Price`)
+- [x] Models (`Plan`, `Price`)
 - [ ] Services (Plan management, Pricing calculation, Feature Flags)
 - [ ] Controllers (Read-only catalog for tenants, management for Super Admin)
 - [ ] Tests (Unit, Feature, Arch)
