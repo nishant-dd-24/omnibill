@@ -106,7 +106,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 - [x] Documentation updated
 
 ### Cross-Cutting Platform Utilities
-- [ ] Audit Log (Append-only writer for all state changes)
+- [x] Audit Log (Append-only writer for all state changes)
 - [ ] Notifications base scaffolding
 
 ---
