@@ -127,8 +127,8 @@ This section outlines the specific implementation responsibilities for each modu
 
 ### 3.4 Subscription Management & Billing
 - **Purpose:** Core subscription engine, Plan catalog, and sole owner of the Stripe Cashier integration.
-- **Primary components:** `Subscription`, `Plan`, `Price` models. `StripeAdapter` (Infrastructure layer).
-- **Internal workflow:** Creates Stripe subscriptions via Cashier. Converts Stripe webhook events (received via Webhook module) into local state changes.
+- **Primary components:** `Subscription`, `Plan`, `Price` models. `StripeAdapter` (Infrastructure layer). `CatalogService`, `FeatureFlagService`, `PricingCalculationService` (Application layer).
+- **Internal workflow:** Creates Stripe subscriptions via Cashier. Converts Stripe webhook events (received via Webhook module) into local state changes. `FeatureFlagService` resolves tenant feature access via `CatalogService` cached plan lookups. `PricingCalculationService` abstracts amount calculations.
 - **Dependencies:** M-TEN (tenant status), M-CUS (customer info).
 
 ### 3.5 Invoice Management
