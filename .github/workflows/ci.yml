@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      pgsql:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        extensions: pdo_pgsql, redis
+        coverage: none
+
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Run Pint
+      run: vendor/bin/pint --test
+
+    - name: Run PHPStan
+      run: vendor/bin/phpstan analyse
+
+    - name: Prepare env
+      run: |
+        cp .env.example .env
+        php artisan key:generate
+
+    - name: Run Tests
+      env:
+        DB_CONNECTION: pgsql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 5432
+        DB_DATABASE: testing
+        DB_USERNAME: root
+        DB_PASSWORD: password
+        CACHE_STORE: redis
+        QUEUE_CONNECTION: redis
+        SESSION_DRIVER: redis
+        REDIS_HOST: 127.0.0.1
+      run: vendor/bin/pest
