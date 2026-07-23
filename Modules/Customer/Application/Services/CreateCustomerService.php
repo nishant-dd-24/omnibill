@@ -15,6 +15,7 @@ class CreateCustomerService
     public function execute(array $data): Customer
     {
         $customer = Customer::create([
+            'tenant_id' => app(\Modules\Shared\Domain\Context\CurrentTenant::class)->id(),
             'name' => $data['name'],
             'email' => $data['email'],
             'stripe_id' => $data['stripe_id'] ?? null,
