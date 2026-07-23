@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Payment\Application\Services;
+
+use Illuminate\Support\Facades\DB;
+use Modules\Payment\Domain\Models\Payment;
+use Modules\Payment\Domain\Services\PaymentStateMachine;
+
+// We will create these events in the next step
+// use Modules\Payment\Domain\Events\PaymentSucceeded;
+// use Modules\Payment\Domain\Events\PaymentFailed;
+// use Modules\Payment\Domain\Events\PaymentRefunded;
+
+class PaymentProcessor
+{
+    public function __construct(
+        private readonly PaymentStateMachine $stateMachine
+    ) {}
+
+    /**
+     * @param array<string, mixed> $gatewayResponse
+     */
+    public function processWebhook(Payment $payment, string $status, array $gatewayResponse): void
+    {
+        DB::transaction(function () use ($payment, $status, $gatewayResponse) {
+            $this->stateMachine->transitionTo($payment, $status);
+            $payment->save();
+
+            $attemptNumber = $payment->attempts()->count() + 1;
+
+            $attempt = $payment->attempts()->create([
+                'tenant_id' => $payment->tenant_id,
+                'attempt_number' => $attemptNumber,
+                'status' => $status,
+                'gateway_response' => $gatewayResponse,
+                'attempted_at' => now(),
+            ]);
+
+            // Dispatch events based on status
+            /*
+            if ($status === 'succeeded') {
+                event(new PaymentSucceeded($payment->id, $payment->tenant_id));
+            } elseif ($status === 'failed') {
+                event(new PaymentFailed($payment->id, $payment->tenant_id, $gatewayResponse['error'] ?? 'Unknown error'));
+            } elseif ($status === 'refunded') {
+                event(new PaymentRefunded($payment->id, $payment->tenant_id));
+            }
+            */
+        });
+    }
+}
