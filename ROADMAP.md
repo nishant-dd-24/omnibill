@@ -116,8 +116,8 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 ### Subscriptions
 - [x] Database (Subscriptions, SubscriptionItems)
 - [x] Models (`Subscription`, `SubscriptionItem`)
-- [ ] Services (Creation, Upgrades/Downgrades, Cancellation, Proration, State Machine)
-- [ ] Events (`SubscriptionActivated`, `SubscriptionCancelled`, `SubscriptionPastDue`)
+- [x] Services (Creation, Upgrades/Downgrades, Cancellation, Proration, State Machine)
+- [x] Events (`SubscriptionActivated`, `SubscriptionCancelled`, `SubscriptionPastDue`)
 - [ ] Jobs (Renewal evaluations)
 - [ ] Tests (Unit, Feature with complex proration logic)
 
