@@ -2,7 +2,18 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Modules\Shared\Domain\Context\CorrelationId;
+use Modules\Shared\Domain\Context\CurrentTenant;
+use Modules\Shared\Domain\Context\TenantConfig;
+use Modules\Tenant\Application\Contracts\GetTenantSettings;
+use Modules\Tenant\Infrastructure\Fake\InMemoryTenantSettings;
+use Ramsey\Uuid\Uuid;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(GetTenantSettings::class, InMemoryTenantSettings::class);
+        $this->app->singleton(TenantConfig::class);
+        $this->app->singleton(CorrelationId::class);
     }
 
     /**
@@ -19,6 +32,35 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        RateLimiter::for('api', function (Request $request) {
+            if (app()->bound(CurrentTenant::class) && app(CurrentTenant::class)->hasTenant()) {
+                $tenantId = app(CurrentTenant::class)->id();
+                // Default to 1000 per minute, override via TenantConfig if plan provides it
+                $limitValue = app(TenantConfig::class)->get('rate_limit', 1000);
+                $limit = is_numeric($limitValue) ? (int) $limitValue : 1000;
+
+                return Limit::perMinute($limit)->by($tenantId);
+            }
+
+            // IP based for unauthenticated/unresolved tenant requests (e.g., login)
+            return Limit::perMinute(60)->by($request->ip());
+        });
+
+        Str::createUuidsUsing(function () {
+            return Uuid::uuid7();
+        });
+
+        Gate::guessPolicyNamesUsing(function (string $modelClass) {
+            // e.g. Modules\Invoice\Domain\Models\Invoice => Modules\Invoice\Http\Policies\InvoicePolicy
+            if (str_starts_with($modelClass, 'Modules\\')) {
+                return str_replace(
+                    '\\Domain\\Models\\',
+                    '\\Http\\Policies\\',
+                    $modelClass
+                ).'Policy';
+            }
+
+            return 'App\\Policies\\'.class_basename($modelClass).'Policy';
+        });
     }
 }

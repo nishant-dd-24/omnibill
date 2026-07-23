@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Modules\Shared\Domain\Context\CurrentTenant;
+use Symfony\Component\HttpFoundation\Response;
+
+class TenantResolutionMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        $tenantId = $this->resolveTenantIdentifier($request);
+
+        // Bind the request-scoped singleton
+        app()->instance(CurrentTenant::class, new CurrentTenant($tenantId));
+
+        return $next($request);
+    }
+
+    private function resolveTenantIdentifier(Request $request): ?string
+    {
+        // 1. Subdomain resolution
+        $host = $request->getHost();
+        $parts = explode('.', (string) $host);
+
+        // Very basic extraction: assuming {tenant_slug}.omnibill.test
+        // In Phase 2, this will be mapped against the Tenant DB to verify active status.
+        if (count($parts) >= 3 && $parts[0] !== 'api' && $parts[0] !== 'www') {
+            return $parts[0];
+        }
+
+        // 2. Fallback to X-Tenant-ID header
+        $header = $request->header('X-Tenant-ID');
+        if (is_string($header) && $header !== '') {
+            return $header;
+        }
+
+        return null;
+    }
+}

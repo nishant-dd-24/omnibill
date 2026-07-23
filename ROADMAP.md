@@ -47,19 +47,19 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 
 ## Phase 1 — Foundation
 
-- [~] Authentication (Sanctum setup) - *Partially complete: package installed but config/User model incomplete*
-- [ ] Authorization (Policies base configuration)
-- [ ] RBAC (Base Role/Permission definitions)
-- [ ] Tenant Resolution (Middleware for `tenant_id` resolution)
-- [ ] Base Models (TenantScoped trait, UUIDv7 primary keys)
-- [ ] UUID Strategy (Implement generation logic for models)
-- [ ] Configuration (Tenant-specific settings architecture)
-- [ ] Logging (Structured JSON logger configuration)
-- [ ] Error Handling (Global exception handler, consistent JSON output)
-- [ ] Validation (Base FormRequests)
-- [ ] Global Middleware (Rate Limiter, Correlation ID generator)
-- [ ] API Response Standards (API Resources envelope)
-- [ ] Testing Infrastructure (Tenant-aware test helpers, Stripe fake/sandbox)
+- [x] Authentication (Sanctum setup)
+- [x] Authorization (Policies base configuration)
+- [x] RBAC (Base Role/Permission definitions)
+- [x] Tenant Resolution (Middleware for `tenant_id` resolution)
+- [x] Base Models (TenantScoped trait, UUIDv7 primary keys)
+- [x] UUID Strategy (Implement generation logic for models)
+- [x] Configuration (Tenant-specific settings architecture)
+- [x] Logging (Structured JSON logger configuration)
+- [x] Error Handling (Global exception handler, consistent JSON output)
+- [x] Validation (Base FormRequests)
+- [x] Global Middleware (Rate Limiter, Correlation ID generator)
+- [x] API Response Standards (API Resources envelope)
+- [x] Testing Infrastructure (Tenant-aware test helpers, Stripe fake/sandbox)
 
 ---
 

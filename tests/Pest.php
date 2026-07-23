@@ -44,7 +44,34 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+use Illuminate\Support\Facades\Http;
+use Modules\Shared\Domain\Context\CurrentTenant;
+
+/**
+ * Act as a specific tenant for the current test.
+ */
+function actingAsTenant(string $tenantId)
 {
-    // ..
+    // Bind to the container for unit tests
+    $currentTenant = new CurrentTenant($tenantId);
+    app()->instance(CurrentTenant::class, $currentTenant);
+
+    // Add to default headers for feature tests
+    test()->withHeaders([
+        'X-Tenant-ID' => $tenantId,
+    ]);
+
+    return test();
+}
+
+/**
+ * Fake Stripe API responses.
+ */
+function withStripeFake()
+{
+    Http::fake([
+        'api.stripe.com/*' => Http::response(['id' => 'fake_id', 'object' => 'dummy'], 200),
+    ]);
+
+    return test();
 }
