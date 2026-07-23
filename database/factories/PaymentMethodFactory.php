@@ -3,9 +3,9 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Modules\Customer\Domain\Models\Customer;
 use Modules\Customer\Domain\Models\PaymentMethod;
-use Modules\Tenant\Domain\Models\Tenant;
 
 /**
  * @extends Factory<PaymentMethod>
@@ -22,9 +22,9 @@ class PaymentMethodFactory extends Factory
     public function definition(): array
     {
         return [
-            'tenant_id' => \Illuminate\Support\Str::uuid()->toString(),
+            'tenant_id' => Str::uuid()->toString(),
             'customer_id' => Customer::factory(),
-            'stripe_payment_method_id' => 'pm_' . fake()->lexify('??????????'),
+            'stripe_payment_method_id' => 'pm_'.fake()->lexify('??????????'),
             'type' => 'card',
             'last4' => fake()->numerify('####'),
             'brand' => 'visa',

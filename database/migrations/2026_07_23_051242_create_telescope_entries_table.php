@@ -12,6 +12,7 @@ return new class extends Migration
     public function getConnection(): ?string
     {
         $connection = config('telescope.storage.database.connection');
+
         return is_string($connection) ? $connection : null;
     }
 

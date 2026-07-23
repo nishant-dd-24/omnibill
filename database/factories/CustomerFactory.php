@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Modules\Customer\Domain\Models\Customer;
-use Modules\Tenant\Domain\Models\Tenant;
 
 /**
  * @extends Factory<Customer>
@@ -21,10 +21,10 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            'tenant_id' => \Illuminate\Support\Str::uuid()->toString(),
+            'tenant_id' => Str::uuid()->toString(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'stripe_id' => 'cus_' . fake()->lexify('??????????'),
+            'stripe_id' => 'cus_'.fake()->lexify('??????????'),
         ];
     }
 }

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Modules\Customer\Domain\Events\CustomerCreated;
 use Modules\Customer\Domain\Models\Customer;
 use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Tenant\Domain\Models\Tenant;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -25,7 +25,7 @@ it('can list customers for a tenant', function () {
     $response = $this->withHeader('X-Tenant-ID', $this->tenant->id)->getJson('/api/customers');
 
     $response->assertStatus(200)
-             ->assertJsonCount(3, 'data');
+        ->assertJsonCount(3, 'data');
 });
 
 it('can create a customer', function () {
@@ -38,7 +38,7 @@ it('can create a customer', function () {
     ]);
 
     $response->assertStatus(201)
-             ->assertJsonPath('data.name', 'John Doe');
+        ->assertJsonPath('data.name', 'John Doe');
 
     $this->assertDatabaseHas('customers', [
         'tenant_id' => $this->tenant->id,

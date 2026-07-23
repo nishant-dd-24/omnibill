@@ -33,8 +33,8 @@ class AuditLog extends Model
     ];
 
     /**
-     * @param array<string, mixed> $attributes
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $attributes
+     * @param  array<string, mixed>  $options
      */
     public function update(array $attributes = [], array $options = [])
     {

@@ -48,17 +48,17 @@ it('dispatches email and logs it successfully', function () {
 });
 
 it('logs failure if email dispatch fails', function () {
-    $dispatcher = new NotificationDispatcher();
+    $dispatcher = new NotificationDispatcher;
     $tenantId = (string) Str::uuid();
     $recipient = 'test@example.com';
-    $mailable = new TestMailable();
+    $mailable = new TestMailable;
 
     Tenant::forceCreate(['id' => $tenantId, 'name' => 'Test Tenant', 'status' => 'active']);
     app()->instance('tenant_id', $tenantId);
 
     Mail::shouldReceive('to')->andThrow(new Exception('Mail failed'));
 
-    expect(fn() => NotificationLog::withoutEvents(fn() => $dispatcher->dispatchEmail($tenantId, $recipient, $mailable)))
+    expect(fn () => NotificationLog::withoutEvents(fn () => $dispatcher->dispatchEmail($tenantId, $recipient, $mailable)))
         ->toThrow(Exception::class, 'Mail failed');
 
     $this->assertDatabaseHas('notification_logs', [
