@@ -18,7 +18,7 @@ class CreateSubscriptionService
     ) {}
 
     /**
-     * @param array<int, array{price_id: string, quantity?: int}> $itemsData
+     * @param  array<int, array{price_id: string, quantity?: int}>  $itemsData
      */
     public function execute(string $tenantId, string $customerId, Plan $plan, array $itemsData): Subscription
     {

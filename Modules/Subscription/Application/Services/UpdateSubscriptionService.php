@@ -12,7 +12,7 @@ use Modules\Subscription\Domain\Models\SubscriptionItem;
 class UpdateSubscriptionService
 {
     /**
-     * @param array<int, array{price_id: string, quantity?: int}> $newItemsData
+     * @param  array<int, array{price_id: string, quantity?: int}>  $newItemsData
      */
     public function execute(Subscription $subscription, Plan $newPlan, array $newItemsData): Subscription
     {

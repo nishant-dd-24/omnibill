@@ -26,7 +26,7 @@ class ProrationService
         }
 
         $remainingSeconds = max(0, $periodEnd->getTimestamp() - $changeDate->getTimestamp());
-        $ratio = $remainingSeconds / $totalSeconds;
+        $ratio = min(1.0, $remainingSeconds / $totalSeconds);
 
         return $priceAmount->multiply($ratio);
     }
