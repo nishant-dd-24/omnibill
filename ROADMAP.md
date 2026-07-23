@@ -91,7 +91,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 - [x] Database (Customers, PaymentMethods)
 - [x] Models (`Customer`, `PaymentMethod` — tokenized only)
 - [x] Services (Customer management, payment method references)
-- [ ] Controllers (Customer CRUD)
+- [x] Controllers (Customer CRUD)
 - [ ] Policies (Customer access)
 - [ ] Events (`CustomerCreated`, `CustomerPaymentMethodAttached`)
 - [ ] Tests (Unit, Feature, Arch)
