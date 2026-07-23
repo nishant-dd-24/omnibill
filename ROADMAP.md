@@ -122,7 +122,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 - [x] Tests (Unit, Feature with complex proration logic)
 
 ### Invoices
-- [ ] Database (Invoices, InvoiceLineItems, CreditNotes)
+- [x] Database (Invoices, InvoiceLineItems, CreditNotes)
 - [ ] Models (`Invoice`, `InvoiceLineItem` — strict immutability after Open)
 - [ ] Services (Draft generation, Finalization, Credit Note logic, Tax application)
 - [ ] Events (`InvoiceFinalized`, `InvoicePaid`, `InvoicePaymentFailed`)
