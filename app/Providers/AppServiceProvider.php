@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\Sanctum;
+use Modules\IdentityAccess\Domain\Models\Token;
 use Modules\Shared\Domain\Context\CorrelationId;
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Shared\Domain\Context\TenantConfig;
@@ -62,5 +64,7 @@ class AppServiceProvider extends ServiceProvider
 
             return 'App\\Policies\\'.class_basename($modelClass).'Policy';
         });
+
+        Sanctum::usePersonalAccessTokenModel(Token::class);
     }
 }

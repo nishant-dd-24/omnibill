@@ -6,7 +6,7 @@ use Modules\Tenant\Domain\Services\TenantLifecycleStateMachine;
 
 test('it can transition from pending to active', function () {
     $tenant = new Tenant(['status' => 'Pending']);
-    $stateMachine = new TenantLifecycleStateMachine();
+    $stateMachine = new TenantLifecycleStateMachine;
 
     $stateMachine->transitionTo($tenant, 'Active');
 
@@ -15,7 +15,7 @@ test('it can transition from pending to active', function () {
 
 test('it throws domain exception on invalid transition', function () {
     $tenant = new Tenant(['status' => 'Pending']);
-    $stateMachine = new TenantLifecycleStateMachine();
+    $stateMachine = new TenantLifecycleStateMachine;
 
     $stateMachine->transitionTo($tenant, 'Suspended');
 })->throws(DomainException::class);

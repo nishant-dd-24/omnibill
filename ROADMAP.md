@@ -77,15 +77,15 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 - [x] Documentation updated
 
 ### Identity & Access Module (User, Role, Permission)
-- [ ] Database (Users, Tokens, UserRoles)
-- [ ] Models (`User`, `Token`, `UserRole`)
-- [ ] Services (User creation, token issuance/revocation, role mapping)
-- [ ] Controllers (Auth endpoints, User CRUD)
-- [ ] Policies (User management scope)
-- [ ] Events (`EmailVerified`)
-- [ ] Jobs (RevokeAllTokensForTenant)
-- [ ] Tests (Unit, Feature, Arch)
-- [ ] Documentation updated
+- [x] Database (Users, Tokens, UserRoles)
+- [x] Models (`User`, `Token`, `UserRole`)
+- [x] Services (User creation, token issuance/revocation, role mapping)
+- [x] Controllers (Auth endpoints, User CRUD)
+- [x] Policies (User management scope)
+- [x] Events (`EmailVerified`)
+- [x] Jobs (RevokeAllTokensForTenant)
+- [x] Tests (Unit, Feature, Arch)
+- [x] Documentation updated
 
 ### Customer Module
 - [ ] Database (Customers, PaymentMethods)
