@@ -10,7 +10,7 @@ arch('domain_isolation')
     ->not->toUse([
         'Modules\*\Application',
         'Modules\*\Infrastructure',
-        'Modules\*\Http'
+        'Modules\*\Http',
     ])
     ->group('arch');
 
