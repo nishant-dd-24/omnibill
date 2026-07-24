@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Dedoc\Scramble\Scramble;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Gate;
@@ -52,6 +53,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::preventLazyLoading(! app()->isProduction());
+
         RateLimiter::for('api', function (Request $request) {
             if (app()->bound(CurrentTenant::class) && app(CurrentTenant::class)->hasTenant()) {
                 $tenantId = app(CurrentTenant::class)->id();
