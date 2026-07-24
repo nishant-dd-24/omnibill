@@ -44,6 +44,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Http;
 use Modules\Shared\Domain\Context\CurrentTenant;
 
@@ -55,6 +56,7 @@ function actingAsTenant(string $tenantId)
     // Bind to the container for unit tests
     $currentTenant = new CurrentTenant($tenantId);
     app()->instance(CurrentTenant::class, $currentTenant);
+    Context::add('tenant_id', $tenantId);
 
     // Add to default headers for feature tests
     test()->withHeaders([

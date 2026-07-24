@@ -4,7 +4,7 @@ namespace Modules\Shared\Presentation\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Shared\Domain\Context\CorrelationId;
+use Illuminate\Support\Facades\Context;
 
 abstract class BaseResource extends JsonResource
 {
@@ -18,7 +18,7 @@ abstract class BaseResource extends JsonResource
     {
         return [
             'meta' => [
-                'correlation_id' => app()->bound(CorrelationId::class) ? app(CorrelationId::class)->id() : null,
+                'correlation_id' => Context::get('correlation_id'),
             ],
         ];
     }

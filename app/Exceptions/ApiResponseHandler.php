@@ -4,8 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Validation\ValidationException;
-use Modules\Shared\Domain\Context\CorrelationId;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ApiResponseHandler
@@ -15,7 +15,7 @@ class ApiResponseHandler
      */
     public static function render(\Throwable $e, Request $request): JsonResponse
     {
-        $correlationId = app()->bound(CorrelationId::class) ? app(CorrelationId::class)->id() : null;
+        $correlationId = Context::get('correlation_id');
 
         $statusCode = self::getStatusCode($e);
 

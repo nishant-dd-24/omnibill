@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Context;
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,6 +21,10 @@ class TenantResolutionMiddleware
 
         // Bind the request-scoped singleton
         app()->instance(CurrentTenant::class, new CurrentTenant($tenantId));
+
+        if ($tenantId) {
+            Context::add('tenant_id', $tenantId);
+        }
 
         return $next($request);
     }

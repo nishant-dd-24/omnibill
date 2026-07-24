@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Shared\Infrastructure\Jobs\Middleware;
 
+use Illuminate\Support\Facades\Context;
 use Modules\Shared\Domain\Context\CurrentTenant;
 
 class BindTenantContext
@@ -15,6 +16,7 @@ class BindTenantContext
 
         if (is_object($job) && property_exists($job, 'tenantId')) {
             app()->instance(CurrentTenant::class, new CurrentTenant($job->tenantId));
+            Context::add('tenant_id', $job->tenantId);
         }
 
         try {

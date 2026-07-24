@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Str;
-use Modules\Shared\Domain\Context\CorrelationId;
 use Symfony\Component\HttpFoundation\Response;
 
 class CorrelationIdMiddleware
@@ -24,7 +24,7 @@ class CorrelationIdMiddleware
         }
 
         // Set in context for logging and background jobs
-        app(CorrelationId::class)->setId($id);
+        Context::add('correlation_id', $id);
 
         $response = $next($request);
 
