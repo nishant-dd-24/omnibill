@@ -19,7 +19,7 @@ use Modules\Shared\Domain\Context\TenantConfig;
 use Modules\Shared\Domain\Contracts\GetTenantSettings;
 use Modules\Subscription\Application\Adapters\BillingGatewayInterface;
 use Modules\Subscription\Infrastructure\Adapters\StripeAdapter;
-use Modules\Tenant\Infrastructure\Fake\InMemoryTenantSettings;
+use Modules\Tenant\Infrastructure\CachingGetTenantSettings;
 use Ramsey\Uuid\Uuid;
 use Spatie\Health\Checks\Checks\CacheCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(GetTenantSettings::class, InMemoryTenantSettings::class);
+        $this->app->bind(GetTenantSettings::class, CachingGetTenantSettings::class);
         $this->app->bind(
             BillingGatewayInterface::class,
             StripeAdapter::class

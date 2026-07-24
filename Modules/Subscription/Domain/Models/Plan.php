@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Plan extends Model
 {
@@ -43,5 +44,15 @@ class Plan extends Model
     public function prices(): HasMany
     {
         return $this->hasMany(Price::class);
+    }
+
+    protected static function booted(): void
+    {
+        $clearCache = function () {
+            Cache::forget('catalog:plans');
+        };
+
+        static::saved($clearCache);
+        static::deleted($clearCache);
     }
 }
