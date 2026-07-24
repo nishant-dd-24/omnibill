@@ -19,7 +19,6 @@ class Subscription extends Model
     use HasFactory;
 
     use HasUuids;
-
     use SoftDeletes;
     use TenantScoped;
 
