@@ -22,15 +22,15 @@ $basePath = dirname(__DIR__, 3);
 
 foreach ($bannedInfrastructureFolders as $folder) {
     $exists = false;
-    foreach (glob($basePath . '/Modules/*/Infrastructure/' . $folder) as $dir) {
+    foreach (glob($basePath.'/Modules/*/Infrastructure/'.$folder) as $dir) {
         if (is_dir($dir)) {
             $exists = true;
             break;
         }
     }
     if ($exists) {
-        $bannedForApplication[] = 'Modules\*\Infrastructure\\' . $folder;
-        $bannedForHttp[] = 'Modules\*\Infrastructure\\' . $folder;
+        $bannedForApplication[] = 'Modules\*\Infrastructure\\'.$folder;
+        $bannedForHttp[] = 'Modules\*\Infrastructure\\'.$folder;
     }
 }
 

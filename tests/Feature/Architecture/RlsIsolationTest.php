@@ -18,7 +18,7 @@ it('enforces row level security at the database layer', function () {
     $rlsManager = app(PostgresRlsManager::class);
 
     // We must bypass RLS initially to set up test data since we don't have a tenant context yet
-    $rlsManager->executeBypassed(function () use ($rlsManager) {
+    $rlsManager->executeBypassed(function () {
         // Create Tenant A and User A
         $tenantAId = (string) Str::uuid();
         DB::table('tenants')->insert(['id' => $tenantAId, 'name' => 'Tenant A', 'created_at' => now(), 'updated_at' => now()]);
@@ -85,10 +85,10 @@ it('enforces row level security at the database layer', function () {
                 $tenantBId, // using Tenant B's ID
                 'Hacker',
                 'hacker@example.com',
-                'secret'
+                'secret',
             ]);
         });
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $insertException = $e;
     }
     expect($insertException)->not->toBeNull()
@@ -104,12 +104,12 @@ it('enforces row level security at the database layer', function () {
     // UPDATE/DELETE without context should affect 0 rows
     $updatedCountNoContext = DB::update('UPDATE users SET name = ?', ['Hacked']);
     expect($updatedCountNoContext)->toBe(0);
-    
+
     $deletedCountNoContext = DB::delete('DELETE FROM users');
     expect($deletedCountNoContext)->toBe(0);
 
     // Test 3: Bypass RLS (Simulate Super Admin)
-    $rlsManager->executeBypassed(function () use ($tenantBId) {
+    $rlsManager->executeBypassed(function () {
         $allUsers = User::withoutGlobalScope(TenantScope::class)->get();
         // Should find both user A and user B
         $foundA = false;
@@ -128,7 +128,7 @@ it('enforces row level security at the database layer', function () {
         // UPDATE should now work
         $updated = DB::update('UPDATE users SET name = ? WHERE email = ?', ['AdminUpdated', 'b@example.com']);
         expect($updated)->toBe(1);
-        
+
         // DELETE should now work
         $deleted = DB::delete('DELETE FROM users WHERE email = ?', ['b@example.com']);
         expect($deleted)->toBe(1);
