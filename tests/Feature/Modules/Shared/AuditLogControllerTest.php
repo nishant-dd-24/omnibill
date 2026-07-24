@@ -28,7 +28,7 @@ it('can list audit logs', function () {
         'user_id' => $user->id,
         'action' => 'created',
         'resource_type' => 'invoice',
-        'resource_id' => '123',
+        'resource_id' => \Illuminate\Support\Str::uuid()->toString(),
     ]);
     $auditLog->save();
 
@@ -46,7 +46,7 @@ it('can show an audit log', function () {
         'user_id' => $user->id,
         'action' => 'created',
         'resource_type' => 'invoice',
-        'resource_id' => '123',
+        'resource_id' => \Illuminate\Support\Str::uuid()->toString(),
     ]);
     $auditLog->save();
 
@@ -65,7 +65,7 @@ it('prevents cross-tenant access to audit logs', function () {
         'user_id' => $user->id,
         'action' => 'created',
         'resource_type' => 'invoice',
-        'resource_id' => '123',
+        'resource_id' => \Illuminate\Support\Str::uuid()->toString(),
     ]);
     $auditLog->save();
 
