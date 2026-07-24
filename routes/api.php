@@ -14,8 +14,10 @@ use Modules\Subscription\Http\Controllers\CatalogController;
 use Modules\Subscription\Http\Controllers\SubscriptionController;
 use Modules\Webhook\Http\Controllers\StripeWebhookController;
 use Modules\Webhook\Http\Controllers\TenantWebhookConfigController;
+use Spatie\Health\Http\Controllers\HealthCheckJsonResultsController;
 
 Route::prefix('v1')->group(function () {
+    Route::get('/health', HealthCheckJsonResultsController::class);
     Route::post('/login', [AuthController::class, 'login']);
 
     // Webhooks

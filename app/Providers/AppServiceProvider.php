@@ -21,6 +21,12 @@ use Modules\Subscription\Application\Adapters\BillingGatewayInterface;
 use Modules\Subscription\Infrastructure\Adapters\StripeAdapter;
 use Modules\Tenant\Infrastructure\Fake\InMemoryTenantSettings;
 use Ramsey\Uuid\Uuid;
+use Spatie\Health\Checks\Checks\CacheCheck;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
+use Spatie\Health\Checks\Checks\PingCheck;
+use Spatie\Health\Checks\Checks\QueueCheck;
+use Spatie\Health\Checks\Checks\RedisCheck;
+use Spatie\Health\Facades\Health;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -86,5 +92,17 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewApiDocs', function ($user = null) {
             return true;
         });
+
+        Gate::define('viewPulse', function ($user = null) {
+            return $user !== null;
+        });
+
+        Health::checks([
+            DatabaseCheck::new(),
+            CacheCheck::new(),
+            QueueCheck::new(),
+            RedisCheck::new(),
+            PingCheck::new()->url('https://api.stripe.com'),
+        ]);
     }
 }
