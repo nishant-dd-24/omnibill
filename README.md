@@ -25,7 +25,7 @@ Designed for SaaS organizations processing complex recurring revenue models, Omn
 The system is compartmentalized into strict Bounded Contexts representing discrete business capabilities:
 
 - **Identity & RBAC**: API token-based authentication using Laravel Sanctum with strict Role-Based Access Control and Global Super Admin capabilities.
-- **Multi-Tenancy**: Complete horizontal logical isolation. Every financial query is implicitly scoped to the active tenant via Row-Level Security (RLS) strategies and global Eloquent scopes.
+- **Multi-Tenancy**: Complete horizontal logical isolation. Every financial query is implicitly scoped to the active tenant via global Eloquent scopes.
 - **Customer & Catalog Management**: Highly customizable Subscription Plans, Features, and Pricing schemas synced synchronously.
 - **Subscription Engine**: Orchestration of recurring subscription states (Active, Canceled, Past Due) driven by secure webhooks.
 - **Invoice Engine**: Immutable financial ledgers. Invoices enforce strict immutability once transitioned out of `Draft` state.
