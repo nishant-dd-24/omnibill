@@ -25,7 +25,7 @@ Designed for SaaS organizations processing complex recurring revenue models, Omn
 The system is compartmentalized into strict Bounded Contexts representing discrete business capabilities:
 
 - **Identity & RBAC**: API token-based authentication using Laravel Sanctum with strict Role-Based Access Control and Global Super Admin capabilities.
-- **Multi-Tenancy**: Complete horizontal logical isolation. Every financial query is implicitly scoped to the active tenant via global Eloquent scopes.
+- **Defense-in-Depth Multi-Tenancy**: Complete horizontal logical isolation. Every financial query is implicitly scoped to the active tenant via global Eloquent scopes. This is backed by an independent database-level layer of **PostgreSQL Row-Level Security (RLS)** which guarantees tenant isolation even in the event of an application logic bug.
 - **Customer & Catalog Management**: Highly customizable Subscription Plans, Features, and Pricing schemas synced synchronously.
 - **Subscription Engine**: Orchestration of recurring subscription states (Active, Canceled, Past Due) driven by secure webhooks.
 - **Invoice Engine**: Immutable financial ledgers. Invoices enforce strict immutability once transitioned out of `Draft` state.
@@ -176,7 +176,7 @@ OmniBill is built for production operations (Phase 6 implementation):
 
 Security is foundational, not bolted on.
 > [!IMPORTANT]
-> **Tenant Isolation:** A Global Eloquent Scope (`TenantScope`) implicitly appends `WHERE tenant_id = ?` to all relevant queries. Under no circumstances should `withoutGlobalScope(TenantScope::class)` be executed outside of explicit Admin reporting CLI commands.
+> **Tenant Isolation:** A Global Eloquent Scope (`TenantScope`) implicitly appends `WHERE tenant_id = ?` to all relevant queries. This is reinforced at the database layer by **PostgreSQL Row-Level Security (RLS)**. RLS completely prevents access to cross-tenant data even if application-level checks are inadvertently bypassed. Under no circumstances should `withoutGlobalScope(TenantScope::class)` be executed outside of explicit Admin reporting CLI commands (which run under an explicitly bypassed RLS context).
 
 - **Idempotency**: `IdempotencyMiddleware` guards all POST/PUT/PATCH/DELETE endpoints to prevent double-billing and replay attacks.
 - **IDOR Protection**: Resources are strictly bounded by Tenant IDs preventing cross-tenant URL manipulation.
