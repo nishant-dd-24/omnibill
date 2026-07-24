@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Customer\Domain\Models\Customer;
 use Modules\Shared\Domain\Models\Traits\TenantScoped;
-use Modules\Tenant\Domain\Models\Tenant;
 
 class Subscription extends Model
 {
@@ -39,22 +37,6 @@ class Subscription extends Model
         'ended_at' => 'datetime',
         'cancel_at_period_end' => 'boolean',
     ];
-
-    /**
-     * @return BelongsTo<Tenant, $this>
-     */
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
-    }
-
-    /**
-     * @return BelongsTo<Customer, $this>
-     */
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
 
     /**
      * @return BelongsTo<Plan, $this>
