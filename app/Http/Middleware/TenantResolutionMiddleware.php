@@ -6,10 +6,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Context;
 use Modules\Shared\Domain\Context\CurrentTenant;
+use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
 use Symfony\Component\HttpFoundation\Response;
 
 class TenantResolutionMiddleware
 {
+    public function __construct(
+        private readonly PostgresRlsManager $rlsManager
+    ) {}
+
     /**
      * Handle an incoming request.
      *
@@ -22,11 +27,16 @@ class TenantResolutionMiddleware
         // Bind the request-scoped singleton
         app()->instance(CurrentTenant::class, new CurrentTenant($tenantId));
 
-        if ($tenantId) {
+        if ($tenantId !== null) {
             Context::add('tenant_id', $tenantId);
+            $this->rlsManager->setTenantContext($tenantId);
         }
 
-        return $next($request);
+        try {
+            return $next($request);
+        } finally {
+            $this->rlsManager->clearTenantContext();
+        }
     }
 
     private function resolveTenantIdentifier(Request $request): ?string

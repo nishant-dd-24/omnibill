@@ -101,12 +101,24 @@ class AppServiceProvider extends ServiceProvider
             return $user !== null && $user->hasRole(Role::SUPER_ADMIN);
         });
 
-        Health::checks([
+        $checks = [
             DatabaseCheck::new(),
             CacheCheck::new(),
             QueueCheck::new(),
-            RedisCheck::new(),
             PingCheck::new()->url('https://api.stripe.com'),
-        ]);
+        ];
+        
+        if (extension_loaded('redis')) {
+            $checks[] = RedisCheck::new();
+        }
+
+        Health::checks($checks);
+
+        $this->app['events']->listen(
+            [\Illuminate\Queue\Events\JobProcessing::class, \Illuminate\Queue\Events\JobProcessed::class, \Illuminate\Queue\Events\JobExceptionOccurred::class, \Illuminate\Queue\Events\JobFailed::class],
+            function () {
+                app(\Modules\Tenant\Infrastructure\Database\PostgresRlsManager::class)->clearTenantContext();
+            }
+        );
     }
 }
