@@ -2,13 +2,18 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Event;
 use Modules\Customer\Domain\Models\Customer;
 use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Subscription\Domain\Models\Plan;
 use Modules\Subscription\Domain\Models\Price;
 use Modules\Tenant\Domain\Models\Tenant;
+use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
 
 /**
  * @property Tenant $tenant
@@ -23,18 +28,18 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         try {
-            $rlsManager = app(\Modules\Tenant\Infrastructure\Database\PostgresRlsManager::class);
+            $rlsManager = app(PostgresRlsManager::class);
             $rlsManager->bypassRls();
-            
-            \Illuminate\Support\Facades\Event::listen(\Illuminate\Foundation\Http\Events\RequestHandled::class, function () use ($rlsManager) {
+
+            Event::listen(RequestHandled::class, function () use ($rlsManager) {
                 $rlsManager->bypassRls();
             });
-            \Illuminate\Support\Facades\Event::listen(\Illuminate\Queue\Events\JobProcessed::class, function () use ($rlsManager) {
+            Event::listen(JobProcessed::class, function () use ($rlsManager) {
                 $rlsManager->bypassRls();
             });
-            \Illuminate\Support\Facades\Event::listen(\Illuminate\Queue\Events\JobFailed::class, function () use ($rlsManager) {
+            Event::listen(JobFailed::class, function () use ($rlsManager) {
                 $rlsManager->bypassRls();
             });
         } catch (\Throwable $e) {
