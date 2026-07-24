@@ -23,7 +23,7 @@ class ProcessInboundWebhookJobTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        DB::statement('PRAGMA foreign_keys=OFF;');
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
     }
 
     public function test_it_processes_payment_intent_succeeded(): void
