@@ -11,9 +11,20 @@ uses(RefreshDatabase::class);
 it('generates a draft invoice with line items', function () {
     $service = new GenerateDraftInvoiceService;
 
-    $tenantId = Str::uuid()->toString();
-    $customerId = Str::uuid()->toString();
-    $subscriptionId = Str::uuid()->toString();
+    $tenant = \Modules\Tenant\Domain\Models\Tenant::create(['name' => 'Test Tenant', 'status' => 'Active']);
+    app()->instance(\Modules\Shared\Domain\Context\CurrentTenant::class, new \Modules\Shared\Domain\Context\CurrentTenant((string) $tenant->id));
+    $customer = \Modules\Customer\Domain\Models\Customer::factory()->create(['tenant_id' => $tenant->id]);
+    $plan = \Modules\Subscription\Domain\Models\Plan::factory()->create();
+    $subscription = \Modules\Subscription\Domain\Models\Subscription::create([
+        'tenant_id' => $tenant->id,
+        'customer_id' => $customer->id,
+        'plan_id' => $plan->id,
+        'status' => 'active'
+    ]);
+
+    $tenantId = $tenant->id;
+    $customerId = $customer->id;
+    $subscriptionId = $subscription->id;
 
     $lineItemsData = [
         [

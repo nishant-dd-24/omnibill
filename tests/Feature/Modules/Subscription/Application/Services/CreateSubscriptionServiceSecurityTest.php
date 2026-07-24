@@ -17,6 +17,8 @@ it('prevents creating a subscription for a customer belonging to another tenant'
     $tenantA = Tenant::create(['name' => 'Tenant A', 'status' => 'Active']);
     $tenantB = Tenant::create(['name' => 'Tenant B', 'status' => 'Active']);
     
+    app()->instance(\Modules\Shared\Domain\Context\CurrentTenant::class, new \Modules\Shared\Domain\Context\CurrentTenant((string) $tenantA->id));
+
     $customerB = Customer::factory()->create(['tenant_id' => $tenantB->id]);
     
     $plan = Plan::factory()->create();
@@ -29,6 +31,7 @@ it('prevents creating a subscription for a customer belonging to another tenant'
 
 it('prevents using a price that does not belong to the selected plan', function () {
     $tenant = Tenant::create(['name' => 'Tenant', 'status' => 'Active']);
+    app()->instance(\Modules\Shared\Domain\Context\CurrentTenant::class, new \Modules\Shared\Domain\Context\CurrentTenant((string) $tenant->id));
     $customer = Customer::factory()->create(['tenant_id' => $tenant->id]);
     
     $planA = Plan::factory()->create();
