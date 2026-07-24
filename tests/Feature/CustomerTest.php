@@ -84,3 +84,47 @@ it('requires valid data for customer update', function () {
         ->assertJsonValidationErrors(['name', 'email'], 'error.details');
 });
 
+it('prevents cross-tenant access when getting a customer', function () {
+    /** @var TestCase $this */
+    $tenant = Tenant::create(['name' => 'Test Tenant', 'status' => 'Active']);
+    $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    $this->actingAs($user);
+    
+    $otherTenant = Tenant::create(['name' => 'Other Tenant', 'status' => 'Active']);
+    $otherCustomer = Customer::factory()->create(['tenant_id' => $otherTenant->id]);
+
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->getJson("/api/customers/{$otherCustomer->id}");
+
+    $response->assertStatus(404);
+});
+
+it('prevents cross-tenant access when updating a customer', function () {
+    /** @var TestCase $this */
+    $tenant = Tenant::create(['name' => 'Test Tenant', 'status' => 'Active']);
+    $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    $this->actingAs($user);
+    
+    $otherTenant = Tenant::create(['name' => 'Other Tenant', 'status' => 'Active']);
+    $otherCustomer = Customer::factory()->create(['tenant_id' => $otherTenant->id]);
+
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->putJson("/api/customers/{$otherCustomer->id}", [
+        'name' => 'Hacked Name',
+    ]);
+
+    $response->assertStatus(404);
+});
+
+it('prevents cross-tenant access when deleting a customer', function () {
+    /** @var TestCase $this */
+    $tenant = Tenant::create(['name' => 'Test Tenant', 'status' => 'Active']);
+    $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    $this->actingAs($user);
+    
+    $otherTenant = Tenant::create(['name' => 'Other Tenant', 'status' => 'Active']);
+    $otherCustomer = Customer::factory()->create(['tenant_id' => $otherTenant->id]);
+
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->deleteJson("/api/customers/{$otherCustomer->id}");
+
+    $response->assertStatus(404);
+});
+
