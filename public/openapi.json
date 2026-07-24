@@ -849,6 +849,26 @@
                 }
             }
         },
+        "/v1/health": {
+            "get": {
+                "operationId": "health.healthCheckJsonResults",
+                "tags": [
+                    "HealthCheckJsonResults"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/invoices": {
             "get": {
                 "operationId": "invoice.index",
@@ -2118,7 +2138,10 @@
                         "type": "string"
                     },
                     "user_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "action": {
                         "type": "string"
@@ -2130,19 +2153,34 @@
                         "type": "string"
                     },
                     "old_values": {
-                        "type": "string"
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
                     },
                     "new_values": {
-                        "type": "string"
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
                     },
                     "ip_address": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "user_agent": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "created_at": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "required": [
@@ -2175,13 +2213,16 @@
                         "type": "string"
                     },
                     "amount": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "currency": {
                         "type": "string"
                     },
                     "reason": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "issued_at": {
                         "type": [
@@ -2190,7 +2231,10 @@
                         ]
                     },
                     "pdf_url": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "created_at": {
                         "type": [
@@ -2233,7 +2277,10 @@
                         "type": "string"
                     },
                     "stripe_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "created_at": {
                         "type": [
@@ -2259,13 +2306,87 @@
                 "title": "CustomerResource"
             },
             "InvoiceLineItem": {
-                "type": "array",
-                "items": {
-                    "type": "string"
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "invoice_id": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "unit_amount": {
+                        "type": "integer"
+                    },
+                    "subtotal": {
+                        "type": "integer"
+                    },
+                    "tax_amount": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "period_start": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "period_end": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "metadata": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
                 },
-                "minItems": 0,
-                "maxItems": 0,
-                "additionalItems": false,
+                "required": [
+                    "id",
+                    "invoice_id",
+                    "description",
+                    "quantity",
+                    "unit_amount",
+                    "subtotal",
+                    "tax_amount",
+                    "total",
+                    "currency",
+                    "period_start",
+                    "period_end",
+                    "metadata",
+                    "created_at",
+                    "updated_at"
+                ],
                 "title": "InvoiceLineItem"
             },
             "InvoiceResource": {
@@ -2281,7 +2402,10 @@
                         "type": "string"
                     },
                     "subscription_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "number": {
                         "type": "string"
@@ -2293,19 +2417,19 @@
                         "type": "string"
                     },
                     "subtotal": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "tax_total": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "total": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "amount_paid": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "amount_due": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "due_date": {
                         "type": [
@@ -2332,10 +2456,17 @@
                         ]
                     },
                     "pdf_url": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "metadata": {
-                        "type": "string"
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
                     },
                     "created_at": {
                         "type": [
@@ -2416,16 +2547,22 @@
                         "type": "string"
                     },
                     "invoice_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "customer_id": {
                         "type": "string"
                     },
                     "payment_method_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "amount": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "currency": {
                         "type": "string"
@@ -2434,10 +2571,18 @@
                         "type": "string"
                     },
                     "completed_at": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
                     },
                     "created_at": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
                     }
                 },
                 "required": [
@@ -2463,10 +2608,17 @@
                         "type": "string"
                     },
                     "description": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "features": {
-                        "type": "string"
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
                     },
                     "prices": {
                         "type": "array",
@@ -2475,10 +2627,13 @@
                         }
                     },
                     "stripe_product_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "is_active": {
-                        "type": "string"
+                        "type": "boolean"
                     }
                 },
                 "required": [
@@ -2498,7 +2653,7 @@
                         "type": "string"
                     },
                     "amount": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "currency": {
                         "type": "string"
@@ -2507,13 +2662,16 @@
                         "type": "string"
                     },
                     "interval_count": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "stripe_price_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "is_active": {
-                        "type": "string"
+                        "type": "boolean"
                     }
                 },
                 "required": [
@@ -2674,7 +2832,10 @@
                         "type": "string"
                     },
                     "stripe_id": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "current_period_start": {
                         "type": [
@@ -2689,7 +2850,7 @@
                         ]
                     },
                     "cancel_at_period_end": {
-                        "type": "string"
+                        "type": "boolean"
                     },
                     "canceled_at": {
                         "type": [
@@ -2715,7 +2876,7 @@
                                     "type": "string"
                                 },
                                 "quantity": {
-                                    "type": "string"
+                                    "type": "integer"
                                 }
                             },
                             "required": [
@@ -2847,7 +3008,7 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "name": {
                         "type": "string"
@@ -2860,10 +3021,18 @@
                         "items": {}
                     },
                     "created_at": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
                     },
                     "updated_at": {
-                        "type": "string"
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
                     }
                 },
                 "required": [
