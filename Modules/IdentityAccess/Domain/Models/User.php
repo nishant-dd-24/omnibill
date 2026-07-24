@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\IdentityAccess\Domain\Models;
 
 use Database\Factories\UserFactory;

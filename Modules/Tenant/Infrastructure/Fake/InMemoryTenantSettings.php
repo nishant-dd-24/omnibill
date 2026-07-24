@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Tenant\Infrastructure\Fake;
 
 use Modules\Shared\Domain\Contracts\GetTenantSettings;

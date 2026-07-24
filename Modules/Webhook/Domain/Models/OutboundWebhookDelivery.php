@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Webhook\Domain\Models;
 
 use Modules\Shared\Domain\Models\BaseModel;

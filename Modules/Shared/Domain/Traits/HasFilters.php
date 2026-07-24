@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Shared\Domain\Traits;
 
 use Illuminate\Database\Eloquent\Builder;

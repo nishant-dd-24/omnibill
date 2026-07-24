@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\IdentityAccess\Application\Jobs;
 
 use Illuminate\Bus\Queueable;

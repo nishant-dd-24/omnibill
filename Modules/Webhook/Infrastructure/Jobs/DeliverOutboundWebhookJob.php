@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Webhook\Infrastructure\Jobs;
 
 use Illuminate\Support\Facades\Http;
