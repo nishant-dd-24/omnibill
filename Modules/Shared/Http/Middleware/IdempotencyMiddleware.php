@@ -29,7 +29,14 @@ class IdempotencyMiddleware
         if (Cache::has($cacheKey)) {
             $cached = Cache::get($cacheKey);
             if (is_array($cached)) {
-                return response($cached['content'], $cached['status'], $cached['headers']);
+                /** @var string|null $content */
+                $content = $cached['content'] ?? null;
+                /** @var int $status */
+                $status = $cached['status'] ?? 200;
+                /** @var array<string, string|array<string>> $headers */
+                $headers = $cached['headers'] ?? [];
+
+                return response($content, $status, $headers);
             }
         }
 

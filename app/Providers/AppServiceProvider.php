@@ -14,6 +14,8 @@ use Modules\Shared\Domain\Context\CorrelationId;
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Shared\Domain\Context\TenantConfig;
 use Modules\Shared\Domain\Contracts\GetTenantSettings;
+use Modules\Subscription\Application\Adapters\BillingGatewayInterface;
+use Modules\Subscription\Infrastructure\Adapters\StripeAdapter;
 use Modules\Tenant\Infrastructure\Fake\InMemoryTenantSettings;
 use Ramsey\Uuid\Uuid;
 
@@ -25,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(GetTenantSettings::class, InMemoryTenantSettings::class);
+        $this->app->bind(
+            BillingGatewayInterface::class,
+            StripeAdapter::class
+        );
         $this->app->singleton(TenantConfig::class);
         $this->app->singleton(CorrelationId::class);
     }

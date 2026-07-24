@@ -14,7 +14,7 @@ class IdempotencyMiddlewareTest extends TestCase
 {
     public function test_it_bypasses_get_requests(): void
     {
-        $middleware = new IdempotencyMiddleware();
+        $middleware = new IdempotencyMiddleware;
         $request = Request::create('/test', 'GET');
         $request->headers->set('Idempotency-Key', 'test-key-1');
 
@@ -28,7 +28,7 @@ class IdempotencyMiddlewareTest extends TestCase
 
     public function test_it_caches_successful_post_requests(): void
     {
-        $middleware = new IdempotencyMiddleware();
+        $middleware = new IdempotencyMiddleware;
         $request = Request::create('/test', 'POST');
         $request->headers->set('Idempotency-Key', 'test-key-2');
 
@@ -50,7 +50,7 @@ class IdempotencyMiddlewareTest extends TestCase
             'headers' => ['X-Cached' => ['true']],
         ], now()->addHour());
 
-        $middleware = new IdempotencyMiddleware();
+        $middleware = new IdempotencyMiddleware;
         $request = Request::create('/test', 'POST');
         $request->headers->set('Idempotency-Key', 'test-key-3');
 
