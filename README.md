@@ -3,7 +3,6 @@
 <div align="center">
   <p><strong>Enterprise-Grade Multi-Tenant SaaS Billing Platform</strong></p>
 
-  [![CI/CD Passing](https://github.com/omnibill/omnibill/actions/workflows/ci.yml/badge.svg)](https://github.com/omnibill/omnibill/actions)
   [![PHP Version](https://img.shields.io/badge/PHP-8.4-777BB4.svg?logo=php)](https://php.net)
   [![Laravel Version](https://img.shields.io/badge/Laravel-13-FF2D20.svg?logo=laravel)](https://laravel.com)
   [![PHPStan](https://img.shields.io/badge/PHPStan-Level%20Max-brightgreen.svg)](https://phpstan.org/)
