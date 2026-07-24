@@ -174,18 +174,18 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 
 ## Phase 6 — Operations
 
-- [ ] Monitoring (Laravel Pulse configuration in production)
-- [ ] Metrics (Custom business metrics: MRR, Active Subscriptions)
-- [ ] Health Checks (DB, Redis, Stripe Connectivity)
-- [ ] Logging (Ensure full structured coverage)
-- [ ] Tracing (Correlation ID threading through queues/logs)
-- [ ] Caching (Cache-aside optimization for Plan catalog and Settings)
-- [ ] Backups (PostgreSQL dumping and S3 retention)
-- [ ] Security Review (Test isolation layers, RLS config, data encryption)
-- [ ] Performance Testing (P95 < 300ms reads, < 800ms writes)
-- [ ] Load Testing
-- [ ] Disaster Recovery (Restore tests)
-- [ ] Deployment Validation
+- [x] Monitoring (Laravel Pulse configuration in production)
+- [x] Metrics (Custom business metrics: MRR, Active Subscriptions)
+- [x] Health Checks (DB, Redis, Stripe Connectivity)
+- [x] Logging (Ensure full structured coverage)
+- [x] Tracing (Correlation ID threading through queues/logs)
+- [x] Caching (Cache-aside optimization for Plan catalog and Settings)
+- [x] Backups (PostgreSQL dumping and S3 retention)
+- [x] Security Review (Test isolation layers, RLS config, data encryption)
+- [x] Performance Testing (P95 < 300ms reads, < 800ms writes)
+- [x] Load Testing
+- [x] Disaster Recovery (Restore tests)
+- [x] Deployment Validation
 
 ---
 
