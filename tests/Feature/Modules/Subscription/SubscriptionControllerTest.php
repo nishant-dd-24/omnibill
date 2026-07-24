@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Modules\Customer\Domain\Models\Customer;
 use Modules\IdentityAccess\Domain\Models\User;
+use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Subscription\Domain\Models\Plan;
 use Modules\Subscription\Domain\Models\Price;
 use Modules\Subscription\Domain\Models\Subscription;
@@ -12,7 +13,7 @@ use Modules\Tenant\Domain\Models\Tenant;
 uses(RefreshDatabase::class);
 
 /**
- * @return array{0: string, 1: \Modules\IdentityAccess\Domain\Models\User, 2: \Modules\Customer\Domain\Models\Customer, 3: \Modules\Subscription\Domain\Models\Plan, 4: \Modules\Subscription\Domain\Models\Price}
+ * @return array{0: string, 1: User, 2: Customer, 3: Plan, 4: Price}
  */
 function setupSubscriptionTest(): array
 {
@@ -22,8 +23,8 @@ function setupSubscriptionTest(): array
     $plan = Plan::factory()->create(['is_active' => true]);
     $price = Price::factory()->create(['plan_id' => $plan->id]);
 
-    $currentTenant = new \Modules\Shared\Domain\Context\CurrentTenant($tenant->id);
-    app()->instance(\Modules\Shared\Domain\Context\CurrentTenant::class, $currentTenant);
+    $currentTenant = new CurrentTenant($tenant->id);
+    app()->instance(CurrentTenant::class, $currentTenant);
     test()->withHeaders(['X-Tenant-ID' => $tenant->id]);
 
     return [$tenant->id, $user, $customer, $plan, $price];

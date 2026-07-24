@@ -15,10 +15,10 @@ use Modules\Shared\Domain\Models\Traits\TenantScoped;
 
 class Subscription extends Model
 {
-    use HasUuids;
-
-    /** @use HasFactory<\Database\Factories\SubscriptionFactory> */
+    /** @use HasFactory<SubscriptionFactory> */
     use HasFactory;
+
+    use HasUuids;
 
     use SoftDeletes;
     use TenantScoped;

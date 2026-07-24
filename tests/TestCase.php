@@ -3,14 +3,19 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Modules\Customer\Domain\Models\Customer;
+use Modules\IdentityAccess\Domain\Models\User;
+use Modules\Subscription\Domain\Models\Plan;
+use Modules\Subscription\Domain\Models\Price;
+use Modules\Tenant\Domain\Models\Tenant;
 
 /**
- * @property \Modules\Tenant\Domain\Models\Tenant $tenant
+ * @property Tenant $tenant
  * @property string $tenantId
- * @property \Modules\IdentityAccess\Domain\Models\User $user
- * @property \Modules\Customer\Domain\Models\Customer $customer
- * @property \Modules\Subscription\Domain\Models\Plan $plan
- * @property \Modules\Subscription\Domain\Models\Price $price
+ * @property User $user
+ * @property Customer $customer
+ * @property Plan $plan
+ * @property Price $price
  */
 abstract class TestCase extends BaseTestCase
 {
