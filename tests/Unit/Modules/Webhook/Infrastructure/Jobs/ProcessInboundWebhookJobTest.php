@@ -6,8 +6,8 @@ namespace Tests\Unit\Modules\Webhook\Infrastructure\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 use Modules\Customer\Domain\Models\Customer;
 use Modules\Payment\Domain\Events\PaymentSucceeded;
 use Modules\Payment\Domain\Models\Payment;
@@ -23,7 +23,7 @@ class ProcessInboundWebhookJobTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        Schema::disableForeignKeyConstraints();
     }
 
     public function test_it_processes_payment_intent_succeeded(): void

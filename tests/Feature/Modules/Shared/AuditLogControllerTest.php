@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Shared\Domain\Models\AuditLog;
@@ -28,7 +29,7 @@ it('can list audit logs', function () {
         'user_id' => $user->id,
         'action' => 'created',
         'resource_type' => 'invoice',
-        'resource_id' => \Illuminate\Support\Str::uuid()->toString(),
+        'resource_id' => Str::uuid()->toString(),
     ]);
     $auditLog->save();
 
@@ -46,7 +47,7 @@ it('can show an audit log', function () {
         'user_id' => $user->id,
         'action' => 'created',
         'resource_type' => 'invoice',
-        'resource_id' => \Illuminate\Support\Str::uuid()->toString(),
+        'resource_id' => Str::uuid()->toString(),
     ]);
     $auditLog->save();
 
@@ -65,7 +66,7 @@ it('prevents cross-tenant access to audit logs', function () {
         'user_id' => $user->id,
         'action' => 'created',
         'resource_type' => 'invoice',
-        'resource_id' => \Illuminate\Support\Str::uuid()->toString(),
+        'resource_id' => Str::uuid()->toString(),
     ]);
     $auditLog->save();
 
