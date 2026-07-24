@@ -64,7 +64,9 @@ jobs:
         QUEUE_CONNECTION: redis
         SESSION_DRIVER: redis
         REDIS_HOST: 127.0.0.1
-      run: vendor/bin/pest
+      run: |
+        PGPASSWORD=password psql -h 127.0.0.1 -U root -d testing -c "ALTER ROLE root NOSUPERUSER NOBYPASSRLS;"
+        vendor/bin/pest
 
     - name: Export OpenAPI Schema
       if: github.ref == 'refs/heads/main'
