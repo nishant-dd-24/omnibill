@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('notification_logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('tenant_id')->index();
-            $table->uuid('customer_id')->index();
+            $table->uuid('customer_id')->nullable()->index();
+            $table->string('recipient')->nullable();
+            $table->string('subject')->nullable();
+            $table->json('payload')->nullable();
             $table->string('type');
             $table->string('status');
             $table->text('error_message')->nullable();

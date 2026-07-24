@@ -15,8 +15,15 @@ class NotificationLog extends Model
     protected $fillable = [
         'tenant_id',
         'customer_id',
+        'recipient',
+        'subject',
+        'payload',
         'type',
         'status',
         'error_message',
+    ];
+
+    protected $casts = [
+        'payload' => 'array',
     ];
 }
