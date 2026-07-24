@@ -167,7 +167,7 @@ OmniBill utilizes **Scramble** to automatically generate OpenAPI documentation d
 ## Operations & Observability
 
 OmniBill is built for production operations (Phase 6 implementation):
-- **Laravel Pulse**: Accessible to Super Admins at `/pulse` for real-time queue, slow query, and business metric (MRR) dashboards.
+- **Laravel Pulse**: Accessible to authenticated users at `/pulse` for real-time queue, slow query, and business metric (MRR) dashboards.
 - **Spatie Health Checks**: Internal readiness probes pinging PostgreSQL, Redis, Queues, and the Stripe API located at `/api/v1/health`.
 - **Context Tracing**: Fully threaded `correlation_id` and `tenant_id` propagation across standard logs, queues, and HTTP boundaries.
 - **Disaster Recovery**: Automated database backups and S3 retention scheduled daily via `spatie/laravel-backup`.
