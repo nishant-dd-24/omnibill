@@ -63,7 +63,7 @@ flowchart TD
 |---|---|
 | **Backend Framework** | Laravel 13 (PHP 8.4) |
 | **Database** | PostgreSQL 15 |
-| **Queue & Cache** | Redis 7 |
+| **Queue & Cache** | Redis 7, Laravel Horizon |
 | **Payment Gateway** | Stripe SDK |
 | **Observability** | Laravel Pulse, Spatie Health |
 | **Documentation** | Scramble (OpenAPI) |
