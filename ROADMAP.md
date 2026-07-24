@@ -161,14 +161,14 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 
 ## Phase 5 — Public API
 
-- [ ] REST API endpoints for all exposed Application Services
-- [ ] Pagination (Cursor-based standard)
-- [ ] Filtering & Sorting
-- [ ] Searching endpoints
-- [ ] API Versioning (`/api/v1/`)
-- [ ] Rate Limiting (Tier-based, per-tenant Redis sliding window)
-- [ ] OpenAPI Documentation (Swagger/Redoc specification generation)
-- [ ] SDK Preparation (Generate generic client libraries)
+- [x] REST API endpoints for all exposed Application Services
+- [x] Pagination (Cursor-based standard)
+- [x] Filtering & Sorting
+- [x] Searching endpoints
+- [x] API Versioning (`/api/v1/`)
+- [x] Rate Limiting (Tier-based, per-tenant Redis sliding window)
+- [x] OpenAPI Documentation (Swagger/Redoc specification generation)
+- [x] SDK Preparation (Generate generic client libraries)
 
 ---
 
