@@ -161,7 +161,7 @@ docker compose exec app vendor/bin/phpstan analyse
 
 OmniBill utilizes **Scramble** to automatically generate OpenAPI documentation directly from source code and docblocks, completely eliminating documentation drift.
 
-- **Local UI:** Start the application and navigate to `http://localhost/docs/api`.
+- **Local UI:** Start the application and navigate to `http://localhost:8000/docs/api`.
 - **Exported Schema:** A static `openapi.json` is generated on every successful CI/CD deployment.
 
 ## Operations & Observability
