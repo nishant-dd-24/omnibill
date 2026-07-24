@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
 
 class DatabaseSeeder extends Seeder
@@ -19,9 +19,18 @@ class DatabaseSeeder extends Seeder
         app(PostgresRlsManager::class)->executeBypassed(function () {
             // User::factory(10)->create();
 
-            User::factory()->create([
+            $tenant = \Modules\Tenant\Domain\Models\Tenant::create([
+                'name' => 'Acme Corp',
+            ]);
+
+            $user = User::factory()->create([
+                'tenant_id' => $tenant->id,
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+            ]);
+
+            $user->roles()->create([
+                'role' => \Modules\IdentityAccess\Domain\Enums\Role::SUPER_ADMIN->value
             ]);
         });
     }

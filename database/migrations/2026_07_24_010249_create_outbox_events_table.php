@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('event_name');
             $table->json('payload');
-            $table->string('tenant_id')->nullable();
+            $table->uuid('tenant_id')->nullable();
             $table->string('correlation_id')->nullable();
             $table->string('queue')->nullable();
             $table->timestamp('processed_at')->nullable();
