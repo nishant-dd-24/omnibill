@@ -1,31 +1,25 @@
-# OmniBill
+# OmniBill v1.0
 
 OmniBill is a modular monolith multi-tenant billing platform.
 
 ## Local Development
 
-The project standard is Docker Compose. We do **not** use Laravel Sail.
+The project standard is Docker and Laravel Sail.
 
 1. **Spin up the environment:**
    ```bash
-   docker compose up -d
+   ./vendor/bin/sail up -d
    ```
-   This provisions:
-   - `app` (Web server: `localhost:8000`)
-   - `worker` (Horizon queue processor)
-   - `pgsql` (PostgreSQL Database)
-   - `redis` (Cache, Session, Queues)
-   - `mailhog` (SMTP Interceptor: `localhost:8025`)
-   - `minio` (S3 Object Storage: `localhost:8900`)
+   This provisions the necessary services (web server, database, Redis, Mailhog, MinIO).
 
 2. **Run migrations:**
    ```bash
-   docker compose exec app php artisan migrate
+   ./vendor/bin/sail artisan migrate
    ```
 
 3. **Run tests:**
    ```bash
-   docker compose exec app vendor/bin/pest
+   ./vendor/bin/sail artisan test
    ```
 
 ## License
