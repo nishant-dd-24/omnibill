@@ -75,7 +75,7 @@ jobs:
         DB_DATABASE: testing
         DB_USERNAME: root
         DB_PASSWORD: password
-      run: php artisan api:export-schema
+      run: php artisan scramble:export --path=public/openapi.json
 
     - name: Upload OpenAPI Schema
       if: github.ref == 'refs/heads/main'
