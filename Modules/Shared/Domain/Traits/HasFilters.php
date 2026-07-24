@@ -9,9 +9,9 @@ trait HasFilters
     /**
      * Scope a query to only include filtered results.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @param  Builder<static>  $query
      * @param  array<string, mixed>  $filters
-     * @return \Illuminate\Database\Eloquent\Builder<static>
+     * @return Builder<static>
      */
     public function scopeFilter(Builder $query, array $filters): Builder
     {

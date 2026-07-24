@@ -9,8 +9,8 @@ trait HasSorting
     /**
      * Scope a query to sort results.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
-     * @return \Illuminate\Database\Eloquent\Builder<static>
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
     public function scopeSort(Builder $query, ?string $sort): Builder
     {

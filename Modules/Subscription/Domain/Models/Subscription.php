@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Subscription\Domain\Models;
 
+use Database\Factories\SubscriptionFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,6 +16,10 @@ use Modules\Shared\Domain\Models\Traits\TenantScoped;
 class Subscription extends Model
 {
     use HasUuids;
+
+    /** @use HasFactory<\Database\Factories\SubscriptionFactory> */
+    use HasFactory;
+
     use SoftDeletes;
     use TenantScoped;
 
@@ -37,6 +43,11 @@ class Subscription extends Model
         'ended_at' => 'datetime',
         'cancel_at_period_end' => 'boolean',
     ];
+
+    protected static function newFactory(): SubscriptionFactory
+    {
+        return SubscriptionFactory::new();
+    }
 
     /**
      * @return BelongsTo<Plan, $this>

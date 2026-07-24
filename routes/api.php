@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Modules\Customer\Http\Controllers\CustomerController;
 use Modules\IdentityAccess\Http\Controllers\AuthController;
 use Modules\IdentityAccess\Http\Controllers\UserController;
+use Modules\Shared\Http\Middleware\IdempotencyMiddleware;
 use Modules\Subscription\Http\Controllers\AdminCatalogController;
 use Modules\Subscription\Http\Controllers\CatalogController;
+use Modules\Subscription\Http\Controllers\SubscriptionController;
 use Modules\Webhook\Http\Controllers\StripeWebhookController;
 
 Route::prefix('v1')->group(function () {
@@ -23,5 +25,10 @@ Route::prefix('v1')->group(function () {
         // Catalog
         Route::get('/plans', [CatalogController::class, 'index']);
         Route::post('/admin/plans', [AdminCatalogController::class, 'store']);
+
+        // Subscriptions
+        Route::middleware(IdempotencyMiddleware::class)->group(function () {
+            Route::apiResource('subscriptions', SubscriptionController::class);
+        });
     });
 });
