@@ -6,6 +6,7 @@ namespace Modules\Shared\Infrastructure\Console;
 
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Shared\Domain\Constants\QueueName;
 use Modules\Shared\Domain\Models\OutboxEvent;
@@ -23,7 +24,7 @@ class DispatchOutboxEventsCommand extends Command
 
         $this->info("Polling outbox events with limit {$limit}...");
 
-        \Illuminate\Support\Facades\DB::transaction(function () use ($limit) {
+        DB::transaction(function () use ($limit) {
             $events = OutboxEvent::whereNull('processed_at')
                 ->orderBy('created_at', 'asc')
                 ->limit($limit)

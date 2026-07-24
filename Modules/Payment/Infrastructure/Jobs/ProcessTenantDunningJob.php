@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Payment\Infrastructure\Jobs;
 
-use Illuminate\Support\Facades\Log;
 use Modules\Payment\Domain\Models\Payment;
 use Modules\Shared\Infrastructure\Jobs\TenantAwareJob;
 
@@ -23,7 +22,7 @@ class ProcessTenantDunningJob extends TenantAwareJob
             ->get();
 
         $paymentIds = $failedPayments->pluck('id')->toArray();
-        if (!empty($paymentIds)) {
+        if (! empty($paymentIds)) {
             Payment::whereIn('id', $paymentIds)->update(['status' => 'pending']);
         }
     }

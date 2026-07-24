@@ -1,9 +1,9 @@
 <?php
 
-use Modules\IdentityAccess\Domain\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Shared\Domain\Scopes\TenantScope;
 use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
 
@@ -49,8 +49,6 @@ it('enforces row level security at the database layer', function () {
     // So we must set it again here.
     $tenantAId = DB::table('tenants')->where('name', 'Tenant A')->value('id');
     $rlsManager->setTenantContext($tenantAId);
-    
-
 
     // Query using raw DB should only return Tenant A's users
     $rawUsers = DB::select('SELECT * FROM users');
