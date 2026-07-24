@@ -13,7 +13,7 @@ use Modules\IdentityAccess\Domain\Models\Token;
 use Modules\Shared\Domain\Context\CorrelationId;
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Shared\Domain\Context\TenantConfig;
-use Modules\Tenant\Application\Contracts\GetTenantSettings;
+use Modules\Shared\Domain\Contracts\GetTenantSettings;
 use Modules\Tenant\Infrastructure\Fake\InMemoryTenantSettings;
 use Ramsey\Uuid\Uuid;
 

@@ -2,7 +2,7 @@
 
 namespace Modules\Tenant\Infrastructure\Fake;
 
-use Modules\Tenant\Application\Contracts\GetTenantSettings;
+use Modules\Shared\Domain\Contracts\GetTenantSettings;
 
 class InMemoryTenantSettings implements GetTenantSettings
 {

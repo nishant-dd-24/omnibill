@@ -114,27 +114,27 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 ## Phase 3 — Billing Engine
 
 ### Subscriptions
-- [ ] Database (Subscriptions, SubscriptionItems)
-- [ ] Models (`Subscription`, `SubscriptionItem`)
-- [ ] Services (Creation, Upgrades/Downgrades, Cancellation, Proration, State Machine)
-- [ ] Events (`SubscriptionActivated`, `SubscriptionCancelled`, `SubscriptionPastDue`)
-- [ ] Jobs (Renewal evaluations)
-- [ ] Tests (Unit, Feature with complex proration logic)
+- [x] Database (Subscriptions, SubscriptionItems)
+- [x] Models (`Subscription`, `SubscriptionItem`)
+- [x] Services (Creation, Upgrades/Downgrades, Cancellation, Proration, State Machine)
+- [x] Events (`SubscriptionActivated`, `SubscriptionCancelled`, `SubscriptionPastDue`)
+- [x] Jobs (Renewal evaluations)
+- [x] Tests (Unit, Feature with complex proration logic)
 
 ### Invoices
-- [ ] Database (Invoices, InvoiceLineItems, CreditNotes)
-- [ ] Models (`Invoice`, `InvoiceLineItem` — strict immutability after Open)
-- [ ] Services (Draft generation, Finalization, Credit Note logic, Tax application)
-- [ ] Events (`InvoiceFinalized`, `InvoicePaid`, `InvoicePaymentFailed`)
-- [ ] Tests (Unit, Feature, Immutability validation)
+- [x] Database (Invoices, InvoiceLineItems, CreditNotes)
+- [x] Models (`Invoice`, `InvoiceLineItem` — strict immutability after Open)
+- [x] Services (Draft generation, Finalization, Credit Note logic, Tax application)
+- [x] Events (`InvoiceFinalized`, `InvoicePaid`, `InvoicePaymentFailed`)
+- [x] Tests (Unit, Feature, Immutability validation)
 
 ### Payments
-- [ ] Database (Payments, PaymentAttempts)
-- [ ] Models (`Payment`, `PaymentAttempt`)
-- [ ] Services (Transaction tracking, State machine driven by Webhooks)
-- [ ] Events (`PaymentSucceeded`, `PaymentFailed`, `PaymentRefunded`)
-- [ ] Jobs (Dunning and Retry logic orchestration)
-- [ ] Tests (Unit, Feature)
+- [x] Database (Payments, PaymentAttempts)
+- [x] Models (`Payment`, `PaymentAttempt`)
+- [x] Services (Transaction tracking, State machine driven by Webhooks)
+- [x] Events (`PaymentSucceeded`, `PaymentFailed`, `PaymentRefunded`)
+- [x] Jobs (Dunning and Retry logic orchestration)
+- [x] Tests (Unit, Feature)
 
 ---
 

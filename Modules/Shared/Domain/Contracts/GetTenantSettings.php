@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Tenant\Application\Contracts;
+namespace Modules\Shared\Domain\Contracts;
 
 interface GetTenantSettings
 {

@@ -29,7 +29,7 @@ it('can list customers for a tenant', function () {
 });
 
 it('can create a customer', function () {
-    Event::fake();
+    Event::fake([\Modules\Customer\Domain\Events\CustomerCreated::class]);
 
     $response = $this->withHeader('X-Tenant-ID', $this->tenant->id)->postJson('/api/customers', [
         'name' => 'John Doe',
