@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Modules\IdentityAccess\Domain\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -18,7 +18,7 @@ it('enforces row level security at the database layer', function () {
     $rlsManager = app(PostgresRlsManager::class);
 
     // We must bypass RLS initially to set up test data since we don't have a tenant context yet
-    $rlsManager->executeBypassed(function () {
+    $rlsManager->executeBypassed(function () use ($rlsManager) {
         // Create Tenant A and User A
         $tenantAId = (string) Str::uuid();
         DB::table('tenants')->insert(['id' => $tenantAId, 'name' => 'Tenant A', 'created_at' => now(), 'updated_at' => now()]);
@@ -49,6 +49,8 @@ it('enforces row level security at the database layer', function () {
     // So we must set it again here.
     $tenantAId = DB::table('tenants')->where('name', 'Tenant A')->value('id');
     $rlsManager->setTenantContext($tenantAId);
+    
+
 
     // Query using raw DB should only return Tenant A's users
     $rawUsers = DB::select('SELECT * FROM users');

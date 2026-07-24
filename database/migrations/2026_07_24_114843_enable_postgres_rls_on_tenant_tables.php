@@ -51,7 +51,7 @@ return new class extends Migration
                             OR 
                             (tenant_id IS NULL AND current_setting('omnibill.bypass_rls', true) = 'on')
                             OR
-                            (tenant_id IS NOT NULL AND current_setting('omnibill.current_tenant_id', true) != '' AND tenant_id = current_setting('omnibill.current_tenant_id', true)::uuid)
+                            (tenant_id IS NOT NULL AND tenant_id = NULLIF(current_setting('omnibill.current_tenant_id', true), '')::uuid)
                         );
 SQL;
                 DB::statement($policy);
