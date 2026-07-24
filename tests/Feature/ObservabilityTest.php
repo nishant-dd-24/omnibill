@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\IdentityAccess\Domain\Enums\Role;
 use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Tenant\Domain\Models\Tenant;
 
@@ -10,13 +11,24 @@ use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
-it('allows authenticated users to view pulse dashboard', function () {
+it('allows super admins to view pulse dashboard', function () {
     $tenant = Tenant::create(['name' => 'Test Tenant', 'status' => 'Active']);
-    $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    $user = clone User::factory()->create(['tenant_id' => $tenant->id]);
+    $user->roles()->create(['role' => Role::SUPER_ADMIN->value]);
 
     $response = actingAs($user)->get('/pulse');
 
     $response->assertStatus(200);
+});
+
+it('prevents regular users from viewing pulse dashboard', function () {
+    $tenant = Tenant::create(['name' => 'Test Tenant', 'status' => 'Active']);
+    $user = clone User::factory()->create(['tenant_id' => $tenant->id]);
+    $user->roles()->create(['role' => Role::TENANT_USER->value]);
+
+    $response = actingAs($user)->get('/pulse');
+
+    $response->assertStatus(403);
 });
 
 it('prevents unauthenticated users from viewing pulse dashboard', function () {

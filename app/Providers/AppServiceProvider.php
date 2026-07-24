@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use Modules\IdentityAccess\Domain\Enums\Role;
 use Modules\IdentityAccess\Domain\Models\Token;
 use Modules\Invoice\Application\Adapters\InvoiceRendererInterface;
 use Modules\Invoice\Infrastructure\Adapters\DompdfInvoiceRenderer;
@@ -97,7 +98,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('viewPulse', function ($user = null) {
-            return $user !== null;
+            return $user !== null && $user->hasRole(Role::SUPER_ADMIN);
         });
 
         Health::checks([

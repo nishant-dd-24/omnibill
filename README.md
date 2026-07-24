@@ -25,7 +25,7 @@ Designed for SaaS organizations processing complex recurring revenue models, Omn
 The system is compartmentalized into strict Bounded Contexts representing discrete business capabilities:
 
 - **Identity & RBAC**: API token-based authentication using Laravel Sanctum with strict Role-Based Access Control and Global Super Admin capabilities.
-- **Multi-Tenancy**: Complete horizontal logical isolation. Every financial query is implicitly scoped to the active tenant via Row-Level Security (RLS) strategies and global Eloquent scopes.
+- **Multi-Tenancy**: Complete horizontal logical isolation. Every financial query is implicitly scoped to the active tenant via global Eloquent scopes.
 - **Customer & Catalog Management**: Highly customizable Subscription Plans, Features, and Pricing schemas synced synchronously.
 - **Subscription Engine**: Orchestration of recurring subscription states (Active, Canceled, Past Due) driven by secure webhooks.
 - **Invoice Engine**: Immutable financial ledgers. Invoices enforce strict immutability once transitioned out of `Draft` state.
@@ -36,7 +36,7 @@ The system is compartmentalized into strict Bounded Contexts representing discre
 
 OmniBill employs a **Modular Monolith** architecture governed by Domain-Driven Design (DDD).
 
-- **Strict Boundaries**: Modules (`Tenant`, `Identity`, `Subscription`, `Invoice`, `Payment`) are explicitly isolated.
+- **Strict Boundaries**: Modules (`Tenant`, `IdentityAccess`, `Subscription`, `Invoice`, `Payment`) are explicitly isolated.
 - **CQRS**: Commands (Mutations) and Queries (Reads) are separated via discrete Application Services.
 - **Event-Driven Workflows**: Modules communicate asynchronously using the **Transactional Outbox Pattern** instead of distributed database transactions, guaranteeing cross-module event delivery even during external network failures.
 
@@ -63,7 +63,7 @@ flowchart TD
 |---|---|
 | **Backend Framework** | Laravel 13 (PHP 8.4) |
 | **Database** | PostgreSQL 15 |
-| **Queue & Cache** | Redis 7 |
+| **Queue & Cache** | Redis 7, Laravel Horizon |
 | **Payment Gateway** | Stripe SDK |
 | **Observability** | Laravel Pulse, Spatie Health |
 | **Documentation** | Scramble (OpenAPI) |
@@ -78,9 +78,12 @@ flowchart TD
 ```text
 omnibill/
 ├── Modules/                  # Core Business Domains (Modular Monolith)
-│   ├── Identity/             # Auth, Tokens, RBAC
+│   ├── Customer/             # Customer CRM records
+│   ├── IdentityAccess/       # Auth, Tokens, RBAC
 │   ├── Invoice/              # Invoices, Line Items, Credit Notes
+│   ├── Notification/         # Dispatched email and system notifications
 │   ├── Payment/              # Transactions, Stripe Intents
+│   ├── Queue/                # Background job structures
 │   ├── Shared/               # Cross-cutting concerns (Context, Exceptions)
 │   ├── Subscription/         # Plans, Catalogs, Active Subscriptions
 │   ├── Tenant/               # Multi-tenancy, RLS Scopes, Settings
@@ -95,43 +98,43 @@ omnibill/
 
 ## Getting Started
 
-Frictionless developer onboarding is a priority. OmniBill is containerized out of the box using **Laravel Sail**.
+Frictionless developer onboarding is a priority. OmniBill is containerized out of the box using **Docker Compose**.
 
 ### Prerequisites
 - Docker & Docker Compose
-- Composer
+- Composer (Optional, can run inside the container)
 
 ### Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/omnibill/omnibill.git
+   git clone https://github.com/nishant-dd-24/omnibill.git
    cd omnibill
    ```
 
 2. **Prepare Environment Variables:**
    ```bash
    cp .env.example .env
-   # Update STRIPE_SECRET and STRIPE_WEBHOOK_SECRET in .env
+   # Update STRIPE_SECRET and STRIPE_WEBHOOK_SECRET in .env if needed
    ```
 
-3. **Install Dependencies:**
+3. **Spin up the Infrastructure:**
    ```bash
-   composer install
+   docker compose up -d
    ```
 
-4. **Spin up the Infrastructure (PostgreSQL & Redis):**
+4. **Install Dependencies:**
    ```bash
-   ./vendor/bin/sail up -d
+   docker compose exec app composer install
    ```
 
 5. **Generate Keys & Migrate the Database:**
    ```bash
-   ./vendor/bin/sail artisan key:generate
-   ./vendor/bin/sail artisan migrate --seed
+   docker compose exec app php artisan key:generate
+   docker compose exec app php artisan migrate --seed
    ```
 
-The API is now running locally at `http://localhost`.
+The API is now running locally at `http://localhost:8000`.
 
 ## Development Workflow
 
@@ -140,18 +143,18 @@ We enforce strict quality gates before any code is merged to `main`.
 ### Testing
 OmniBill uses [Pest](https://pestphp.com/) for its elegant, expectation-based testing API.
 ```bash
-./vendor/bin/sail artisan test
+docker compose exec app vendor/bin/pest
 ```
-*To verify architectural boundaries specifically, run:* `./vendor/bin/sail artisan test --group arch`
+*To verify architectural boundaries specifically, run:* `docker compose exec app vendor/bin/pest --group arch`
 
 ### Static Analysis & Formatting
 Zero PHPStan errors are required.
 ```bash
 # Code Formatting
-./vendor/bin/pint
+docker compose exec app vendor/bin/pint
 
 # Static Analysis
-./vendor/bin/phpstan analyse
+docker compose exec app vendor/bin/phpstan analyse
 ```
 
 ## API Documentation
@@ -192,7 +195,16 @@ For engineers contributing to the core, please consult the authoritative archite
 
 ## Contributing
 
-We adhere to the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for branch strategies and pull requests. Please ensure all commits are atomic and descriptive (e.g., `feat(invoice): add immutable ledger validation`).
+Contributions, issues, and feature requests are welcome.
+
+Please:
+
+- Follow the established architecture and coding standards.
+- Use Conventional Commits.
+- Keep commits small and atomic.
+- Ensure all quality gates (Pest, PHPStan, Pint) pass before opening a pull request.
+
+For architectural guidance, refer to the documentation in the `/docs` directory.
 
 ## License
 
