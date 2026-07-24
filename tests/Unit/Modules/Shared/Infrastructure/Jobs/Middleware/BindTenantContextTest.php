@@ -14,12 +14,14 @@ it('binds the tenant context if tenantId is present on the job', function () {
     $middleware = new BindTenantContext;
 
     $called = false;
-    $middleware->handle($job, function () use (&$called) {
+    $boundTenantId = null;
+    $middleware->handle($job, function () use (&$called, &$boundTenantId) {
         $called = true;
+        $boundTenantId = app(CurrentTenant::class)->id();
     });
 
     expect($called)->toBeTrue()
-        ->and(app(CurrentTenant::class)->id())->toBe('test-tenant-123');
+        ->and($boundTenantId)->toBe('test-tenant-123');
 });
 
 it('does not crash if tenantId is missing', function () {
