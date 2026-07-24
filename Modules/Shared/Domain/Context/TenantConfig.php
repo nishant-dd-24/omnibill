@@ -3,7 +3,7 @@
 namespace Modules\Shared\Domain\Context;
 
 use Illuminate\Config\Repository;
-use Modules\Tenant\Application\Contracts\GetTenantSettings;
+use Modules\Shared\Domain\Contracts\GetTenantSettings;
 
 class TenantConfig
 {

@@ -38,11 +38,11 @@ class PaymentProcessor
 
             // Dispatch events based on status
             if ($status === 'succeeded') {
-                event(new PaymentSucceeded($payment->id, $payment->tenant_id));
+                DB::afterCommit(fn () => event(new PaymentSucceeded($payment->id, $payment->tenant_id)));
             } elseif ($status === 'failed') {
-                event(new PaymentFailed($payment->id, $payment->tenant_id, $gatewayResponse['error'] ?? 'Unknown error'));
+                DB::afterCommit(fn () => event(new PaymentFailed($payment->id, $payment->tenant_id, $gatewayResponse['error'] ?? 'Unknown error')));
             } elseif ($status === 'refunded') {
-                event(new PaymentRefunded($payment->id, $payment->tenant_id));
+                DB::afterCommit(fn () => event(new PaymentRefunded($payment->id, $payment->tenant_id)));
             }
         });
     }

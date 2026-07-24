@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+use Modules\Shared\Domain\Context\CurrentTenant;
+use Modules\Shared\Infrastructure\Jobs\Middleware\BindTenantContext;
+
+it('binds the tenant context if tenantId is present on the job', function () {
+    $job = new class {
+        public string $tenantId = 'test-tenant-123';
+    };
+
+    $middleware = new BindTenantContext();
+    
+    $called = false;
+    $middleware->handle($job, function () use (&$called) {
+        $called = true;
+    });
+
+    expect($called)->toBeTrue()
+        ->and(app(CurrentTenant::class)->id())->toBe('test-tenant-123');
+});
+
+it('does not crash if tenantId is missing', function () {
+    $job = new class {};
+
+    $middleware = new BindTenantContext();
+    
+    $called = false;
+    $middleware->handle($job, function () use (&$called) {
+        $called = true;
+    });
+
+    expect($called)->toBeTrue();
+});

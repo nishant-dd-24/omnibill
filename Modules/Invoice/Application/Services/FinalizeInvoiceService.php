@@ -22,7 +22,7 @@ class FinalizeInvoiceService
                 'finalized_at' => now(),
             ]);
 
-            event(new InvoiceFinalized($invoice));
+            DB::afterCommit(fn () => event(new InvoiceFinalized($invoice)));
 
             return $invoice;
         });

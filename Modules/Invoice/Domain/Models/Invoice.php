@@ -61,4 +61,12 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceLineItem::class);
     }
+
+    /**
+     * @return HasMany<CreditNote, $this>
+     */
+    public function creditNotes(): HasMany
+    {
+        return $this->hasMany(CreditNote::class);
+    }
 }
