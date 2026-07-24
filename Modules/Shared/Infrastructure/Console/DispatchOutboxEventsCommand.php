@@ -23,36 +23,39 @@ class DispatchOutboxEventsCommand extends Command
 
         $this->info("Polling outbox events with limit {$limit}...");
 
-        $events = OutboxEvent::whereNull('processed_at')
-            ->orderBy('created_at', 'asc')
-            ->limit($limit)
-            ->get();
+        \Illuminate\Support\Facades\DB::transaction(function () use ($limit) {
+            $events = OutboxEvent::whereNull('processed_at')
+                ->orderBy('created_at', 'asc')
+                ->limit($limit)
+                ->lockForUpdate()
+                ->get();
 
-        if ($events->isEmpty()) {
-            $this->info('No pending outbox events found.');
+            if ($events->isEmpty()) {
+                $this->info('No pending outbox events found.');
 
-            return self::SUCCESS;
-        }
-
-        $this->info("Found {$events->count()} pending outbox event(s). Dispatching...");
-
-        /** @var OutboxEvent $event */
-        foreach ($events as $event) {
-            try {
-                $this->dispatchEvent($event);
-
-                $event->update([
-                    'processed_at' => now(),
-                ]);
-            } catch (Exception $e) {
-                Log::error("Failed to dispatch outbox event {$event->id}: ".$e->getMessage(), [
-                    'event_id' => $event->id,
-                    'exception' => $e,
-                ]);
+                return self::SUCCESS;
             }
-        }
 
-        $this->info('Outbox events dispatched successfully.');
+            $this->info("Found {$events->count()} pending outbox event(s). Dispatching...");
+
+            /** @var OutboxEvent $event */
+            foreach ($events as $event) {
+                try {
+                    $this->dispatchEvent($event);
+
+                    $event->update([
+                        'processed_at' => now(),
+                    ]);
+                } catch (Exception $e) {
+                    Log::error("Failed to dispatch outbox event {$event->id}: ".$e->getMessage(), [
+                        'event_id' => $event->id,
+                        'exception' => $e,
+                    ]);
+                }
+            }
+
+            $this->info('Outbox events dispatched successfully.');
+        });
 
         return self::SUCCESS;
     }
