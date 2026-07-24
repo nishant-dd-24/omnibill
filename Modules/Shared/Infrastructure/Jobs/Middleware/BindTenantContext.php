@@ -28,7 +28,10 @@ class BindTenantContext
             if ($previousTenant !== null) {
                 app()->instance(CurrentTenant::class, $previousTenant);
                 if ($previousTenant->hasTenant()) {
-                    $rlsManager->setTenantContext($previousTenant->id());
+                    $tenantId = $previousTenant->id();
+                    if ($tenantId !== null) {
+                        $rlsManager->setTenantContext((string) $tenantId);
+                    }
                 } else {
                     $rlsManager->clearTenantContext();
                 }

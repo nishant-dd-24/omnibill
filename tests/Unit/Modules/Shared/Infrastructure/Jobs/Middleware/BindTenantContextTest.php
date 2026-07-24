@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Shared\Infrastructure\Jobs\Middleware\BindTenantContext;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class);
+uses(TestCase::class);
 
 it('binds the tenant context if tenantId is present on the job', function () {
     $job = new class

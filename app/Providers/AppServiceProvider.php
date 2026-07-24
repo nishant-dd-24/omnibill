@@ -6,6 +6,10 @@ use Dedoc\Scramble\Scramble;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
@@ -22,6 +26,7 @@ use Modules\Shared\Domain\Contracts\GetTenantSettings;
 use Modules\Subscription\Application\Adapters\BillingGatewayInterface;
 use Modules\Subscription\Infrastructure\Adapters\StripeAdapter;
 use Modules\Tenant\Infrastructure\CachingGetTenantSettings;
+use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
 use Ramsey\Uuid\Uuid;
 use Spatie\Health\Checks\Checks\CacheCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
@@ -107,17 +112,17 @@ class AppServiceProvider extends ServiceProvider
             QueueCheck::new(),
             PingCheck::new()->url('https://api.stripe.com'),
         ];
-        
+
         if (extension_loaded('redis')) {
             $checks[] = RedisCheck::new();
         }
 
         Health::checks($checks);
 
-        $this->app['events']->listen(
-            [\Illuminate\Queue\Events\JobProcessing::class, \Illuminate\Queue\Events\JobProcessed::class, \Illuminate\Queue\Events\JobExceptionOccurred::class, \Illuminate\Queue\Events\JobFailed::class],
+        app('events')->listen(
+            [JobProcessing::class, JobProcessed::class, JobExceptionOccurred::class, JobFailed::class],
             function () {
-                app(\Modules\Tenant\Infrastructure\Database\PostgresRlsManager::class)->clearTenantContext();
+                app(PostgresRlsManager::class)->clearTenantContext();
             }
         );
     }

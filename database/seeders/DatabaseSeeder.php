@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        app(\Modules\Tenant\Infrastructure\Database\PostgresRlsManager::class)->executeBypassed(function () {
+        app(PostgresRlsManager::class)->executeBypassed(function () {
             // User::factory(10)->create();
 
             User::factory()->create([

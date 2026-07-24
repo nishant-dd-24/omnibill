@@ -1,10 +1,11 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Modules\Shared\Domain\Scopes\TenantScope;
 use Modules\Tenant\Infrastructure\Database\PostgresRlsManager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -19,23 +20,23 @@ it('enforces row level security at the database layer', function () {
     // We must bypass RLS initially to set up test data since we don't have a tenant context yet
     $rlsManager->executeBypassed(function () {
         // Create Tenant A and User A
-        $tenantAId = (string) \Illuminate\Support\Str::uuid();
+        $tenantAId = (string) Str::uuid();
         DB::table('tenants')->insert(['id' => $tenantAId, 'name' => 'Tenant A', 'created_at' => now(), 'updated_at' => now()]);
-        
+
         $userA = User::factory()->create([
             'tenant_id' => $tenantAId,
-            'email' => 'a@example.com'
+            'email' => 'a@example.com',
         ]);
 
         // Create Tenant B and User B
-        $tenantBId = (string) \Illuminate\Support\Str::uuid();
+        $tenantBId = (string) Str::uuid();
         DB::table('tenants')->insert(['id' => $tenantBId, 'name' => 'Tenant B', 'created_at' => now(), 'updated_at' => now()]);
-        
+
         $userB = User::factory()->create([
             'tenant_id' => $tenantBId,
-            'email' => 'b@example.com'
+            'email' => 'b@example.com',
         ]);
-        
+
         // Assert they both exist
         expect(User::withoutGlobalScope(TenantScope::class)->count())->toBeGreaterThanOrEqual(2);
 
@@ -51,8 +52,8 @@ it('enforces row level security at the database layer', function () {
 
     // Query using raw DB should only return Tenant A's users
     $rawUsers = DB::select('SELECT * FROM users');
-    
-    // We might have the global seeder user in there too? Wait, the seeder user has NO tenant_id or some other tenant_id. 
+
+    // We might have the global seeder user in there too? Wait, the seeder user has NO tenant_id or some other tenant_id.
     // Since RLS is strict on tenant_id, we only see users with Tenant A's ID.
     $hasTenantB = false;
     foreach ($rawUsers as $u) {
@@ -86,8 +87,12 @@ it('enforces row level security at the database layer', function () {
         $foundA = false;
         $foundB = false;
         foreach ($allUsers as $u) {
-            if ($u->email === 'a@example.com') $foundA = true;
-            if ($u->email === 'b@example.com') $foundB = true;
+            if ($u->email === 'a@example.com') {
+                $foundA = true;
+            }
+            if ($u->email === 'b@example.com') {
+                $foundB = true;
+            }
         }
         expect($foundA)->toBeTrue();
         expect($foundB)->toBeTrue();
