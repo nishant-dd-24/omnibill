@@ -41,7 +41,7 @@ class CreateSubscriptionService
             $this->stateMachine->activate($subscription);
             $subscription->save();
 
-            event(new SubscriptionActivated($subscription));
+            DB::afterCommit(fn () => event(new SubscriptionActivated($subscription)));
 
             return $subscription;
         });
