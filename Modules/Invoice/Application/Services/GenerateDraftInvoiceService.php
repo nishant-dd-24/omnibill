@@ -20,11 +20,21 @@ class GenerateDraftInvoiceService
         array $lineItemsData,
         string $currency
     ): Invoice {
-        return DB::transaction(function () use ($tenantId, $customerId, $subscriptionId, $lineItemsData, $currency) {
+        $customer = \Modules\Customer\Domain\Models\Customer::where('id', $customerId)
+            ->where('tenant_id', $tenantId)
+            ->firstOrFail();
+
+        if ($subscriptionId) {
+            \Modules\Subscription\Domain\Models\Subscription::where('id', $subscriptionId)
+                ->where('tenant_id', $tenantId)
+                ->firstOrFail();
+        }
+
+        return DB::transaction(function () use ($tenantId, $customer, $subscriptionId, $lineItemsData, $currency) {
             /** @var Invoice $invoice */
             $invoice = Invoice::create([
                 'tenant_id' => $tenantId,
-                'customer_id' => $customerId,
+                'customer_id' => $customer->id,
                 'subscription_id' => $subscriptionId,
                 'number' => 'INV-'.strtoupper(Str::random(8)),
                 'status' => 'draft',

@@ -22,10 +22,21 @@ class CreateSubscriptionService
      */
     public function execute(string $tenantId, string $customerId, Plan $plan, array $itemsData): Subscription
     {
-        return DB::transaction(function () use ($tenantId, $customerId, $plan, $itemsData) {
+        $customer = \Modules\Customer\Domain\Models\Customer::where('id', $customerId)
+            ->where('tenant_id', $tenantId)
+            ->firstOrFail();
+
+        $validPriceIds = $plan->prices()->pluck('id')->toArray();
+        foreach ($itemsData as $item) {
+            if (!in_array($item['price_id'], $validPriceIds)) {
+                throw new \DomainException("Price {$item['price_id']} does not belong to the selected plan.");
+            }
+        }
+
+        return DB::transaction(function () use ($tenantId, $customer, $plan, $itemsData) {
             $subscription = Subscription::create([
                 'tenant_id' => $tenantId,
-                'customer_id' => $customerId,
+                'customer_id' => $customer->id,
                 'plan_id' => $plan->id,
                 'status' => SubscriptionStateMachine::STATUS_PENDING,
             ]);
