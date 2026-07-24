@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Customer\Domain\Models\Customer;
+use Modules\IdentityAccess\Domain\Models\User;
 use Modules\Invoice\Domain\Models\Invoice;
 use Modules\Payment\Application\Services\InitiatePaymentService;
 use Modules\Payment\Domain\Models\Payment;
+use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Subscription\Application\Adapters\BillingGatewayInterface;
 use Modules\Tenant\Domain\Models\Tenant;
-
-use Modules\IdentityAccess\Domain\Models\User;
-
-use Modules\Shared\Domain\Context\CurrentTenant;
 
 uses(RefreshDatabase::class);
 

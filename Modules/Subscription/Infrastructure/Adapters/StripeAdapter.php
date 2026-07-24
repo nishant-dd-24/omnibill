@@ -25,7 +25,7 @@ class StripeAdapter implements BillingGatewayInterface
     /**
      * Create a customer in the external billing gateway.
      *
-     * @param array<string, string> $metadata
+     * @param  array<string, string>  $metadata
      */
     public function createCustomer(string $email, string $name, array $metadata = []): string
     {
@@ -34,7 +34,7 @@ class StripeAdapter implements BillingGatewayInterface
             'name' => $name,
             'metadata' => $metadata,
         ]);
-        
+
         return $customer->id;
     }
 

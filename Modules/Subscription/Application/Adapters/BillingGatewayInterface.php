@@ -9,7 +9,7 @@ interface BillingGatewayInterface
     /**
      * Create a customer in the external billing gateway.
      *
-     * @param array<string, string> $metadata
+     * @param  array<string, string>  $metadata
      * @return string The external gateway customer ID (e.g., stripe_id)
      */
     public function createCustomer(string $email, string $name, array $metadata = []): string;

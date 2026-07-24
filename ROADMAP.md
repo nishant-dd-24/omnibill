@@ -143,7 +143,7 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 ### Stripe & Payments
 - [x] Stripe SDK Integration (Cashier wrapped within M-SUB Application layer)
 - [x] Checkout / Payment Intent Initiation
-- [ ] Webhook Processing (Inbound, signature verification, persist-then-process)
+- [x] Webhook Processing (Inbound, signature verification, persist-then-process)
 
 ### System Workflows
 - [ ] Outbound Webhooks (Deliver Integration Events to Tenant URLs)
