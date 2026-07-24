@@ -148,8 +148,8 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 ### System Workflows
 - [ ] Outbound Webhooks (Deliver Integration Events to Tenant URLs)
 - [ ] Email (Transactional delivery via Notification module)
-- [ ] PDF Generation (Invoice rendering and export)
-- [ ] Object Storage (Save generated PDFs to S3/MinIO)
+- [x] PDF Generation (Invoice rendering and export)
+- [x] Object Storage (Save generated PDFs to S3/MinIO)
 
 ### Asynchronous Machinery
 - [x] Background Jobs (Base `TenantAwareJob` integration)

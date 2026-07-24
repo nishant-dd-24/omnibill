@@ -6,9 +6,12 @@ namespace Tests\Unit\Modules\Webhook\Infrastructure\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Modules\Customer\Domain\Models\Customer;
 use Modules\Payment\Domain\Events\PaymentSucceeded;
 use Modules\Payment\Domain\Models\Payment;
+use Modules\Tenant\Domain\Models\Tenant;
 use Modules\Webhook\Domain\Models\WebhookEvent;
 use Modules\Webhook\Infrastructure\Jobs\ProcessInboundWebhookJob;
 use Tests\TestCase;
@@ -20,19 +23,19 @@ class ProcessInboundWebhookJobTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        \Illuminate\Support\Facades\DB::statement('PRAGMA foreign_keys=OFF;');
+        DB::statement('PRAGMA foreign_keys=OFF;');
     }
 
     public function test_it_processes_payment_intent_succeeded(): void
     {
         Event::fake([PaymentSucceeded::class]);
 
-        $tenant = \Modules\Tenant\Domain\Models\Tenant::create([
+        $tenant = Tenant::create([
             'name' => 'Test Tenant',
             'status' => 'active',
         ]);
 
-        $customer = \Modules\Customer\Domain\Models\Customer::create([
+        $customer = Customer::create([
             'tenant_id' => $tenant->id,
             'name' => 'Test Customer',
             'email' => 'test@example.com',

@@ -10,6 +10,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Modules\IdentityAccess\Domain\Models\Token;
+use Modules\Invoice\Application\Adapters\InvoiceRendererInterface;
+use Modules\Invoice\Infrastructure\Adapters\DompdfInvoiceRenderer;
 use Modules\Shared\Domain\Context\CorrelationId;
 use Modules\Shared\Domain\Context\CurrentTenant;
 use Modules\Shared\Domain\Context\TenantConfig;
@@ -30,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             BillingGatewayInterface::class,
             StripeAdapter::class
+        );
+        $this->app->bind(
+            InvoiceRendererInterface::class,
+            DompdfInvoiceRenderer::class
         );
         $this->app->singleton(TenantConfig::class);
         $this->app->singleton(CorrelationId::class);

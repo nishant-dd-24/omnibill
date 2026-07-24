@@ -57,7 +57,7 @@ class ProcessInboundWebhookJob implements ShouldQueue
     }
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     private function handlePaymentIntentSucceeded(array $payload): void
     {
@@ -66,7 +66,7 @@ class ProcessInboundWebhookJob implements ShouldQueue
         $data = $payload['data'] ?? null;
         /** @var array<string, mixed>|null $object */
         $object = $data['object'] ?? null;
-        
+
         $paymentIntentId = $object['id'] ?? null;
 
         if (! is_string($paymentIntentId)) {
