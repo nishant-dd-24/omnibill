@@ -152,10 +152,10 @@ OmniBill is a production-grade, distributed-ready, multi-tenant SaaS billing pla
 - [ ] Object Storage (Save generated PDFs to S3/MinIO)
 
 ### Asynchronous Machinery
-- [ ] Background Jobs (Base `TenantAwareJob` integration)
-- [ ] Queues (Configure `billing-critical`, `invoicing`, `notifications`, `webhooks`)
-- [ ] Outbox Pattern (Dispatcher daemon for `outbox_events` -> Queue)
-- [ ] Idempotency (Redis storage for client-supplied `Idempotency-Key`)
+- [x] Background Jobs (Base `TenantAwareJob` integration)
+- [x] Queues (Configure `billing-critical`, `invoicing`, `notifications`, `webhooks`)
+- [x] Outbox Pattern (Dispatcher daemon for `outbox_events` -> Queue)
+- [x] Idempotency (Redis storage for client-supplied `Idempotency-Key`)
 
 ---
 

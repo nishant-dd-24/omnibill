@@ -10,7 +10,7 @@ class BindTenantContext
 {
     public function handle(mixed $job, callable $next): void
     {
-        if (isset($job->tenantId)) {
+        if (is_object($job) && property_exists($job, 'tenantId')) {
             app()->instance(CurrentTenant::class, new CurrentTenant($job->tenantId));
         }
 

@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Modules\Shared\Infrastructure\Jobs\Middleware\BindTenantContext;
 
 abstract class TenantAwareJob implements ShouldQueue
 {
@@ -25,6 +26,6 @@ abstract class TenantAwareJob implements ShouldQueue
      */
     public function middleware(): array
     {
-        return [new \Modules\Shared\Infrastructure\Jobs\Middleware\BindTenantContext];
+        return [new BindTenantContext];
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Subscription\Application\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Customer\Domain\Models\Customer;
 use Modules\Subscription\Domain\Events\SubscriptionActivated;
 use Modules\Subscription\Domain\Models\Plan;
 use Modules\Subscription\Domain\Models\Subscription;
@@ -22,13 +23,13 @@ class CreateSubscriptionService
      */
     public function execute(string $tenantId, string $customerId, Plan $plan, array $itemsData): Subscription
     {
-        $customer = \Modules\Customer\Domain\Models\Customer::where('id', $customerId)
+        $customer = Customer::where('id', $customerId)
             ->where('tenant_id', $tenantId)
             ->firstOrFail();
 
         $validPriceIds = $plan->prices()->pluck('id')->toArray();
         foreach ($itemsData as $item) {
-            if (!in_array($item['price_id'], $validPriceIds)) {
+            if (! in_array($item['price_id'], $validPriceIds)) {
                 throw new \DomainException("Price {$item['price_id']} does not belong to the selected plan.");
             }
         }

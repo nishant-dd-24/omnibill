@@ -6,7 +6,9 @@ namespace Modules\Invoice\Application\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\Customer\Domain\Models\Customer;
 use Modules\Invoice\Domain\Models\Invoice;
+use Modules\Subscription\Domain\Models\Subscription;
 
 class GenerateDraftInvoiceService
 {
@@ -20,12 +22,12 @@ class GenerateDraftInvoiceService
         array $lineItemsData,
         string $currency
     ): Invoice {
-        $customer = \Modules\Customer\Domain\Models\Customer::where('id', $customerId)
+        $customer = Customer::where('id', $customerId)
             ->where('tenant_id', $tenantId)
             ->firstOrFail();
 
         if ($subscriptionId) {
-            \Modules\Subscription\Domain\Models\Subscription::where('id', $subscriptionId)
+            Subscription::where('id', $subscriptionId)
                 ->where('tenant_id', $tenantId)
                 ->firstOrFail();
         }
