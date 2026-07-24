@@ -15,6 +15,6 @@ class TaxCalculationService
      */
     public function calculateTax(int $amount, float $taxRate): int
     {
-        return (int) round($amount * ($taxRate / 100));
+        return (int) round($amount * ($taxRate / 100), 0, PHP_ROUND_HALF_EVEN);
     }
 }

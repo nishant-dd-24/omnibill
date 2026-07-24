@@ -17,9 +17,8 @@ class IssueCreditNoteService
             throw new \DomainException('Cannot issue credit note for draft invoice.');
         }
 
-        $existingCreditTotal = $invoice->creditNotes()->sum('amount');
-        if (($amount + $existingCreditTotal) > $invoice->total) {
-            throw new \DomainException('Credit note amount cannot exceed invoice total.');
+        if ($amount > $invoice->amount_due) {
+            throw new \DomainException('Credit note amount cannot exceed invoice amount due.');
         }
 
         return DB::transaction(function () use ($invoice, $amount, $reason) {
