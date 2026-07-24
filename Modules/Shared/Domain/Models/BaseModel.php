@@ -4,9 +4,13 @@ namespace Modules\Shared\Domain\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Shared\Domain\Traits\HasFilters;
+use Modules\Shared\Domain\Traits\HasSorting;
 
 abstract class BaseModel extends Model
 {
+    use HasFilters;
+    use HasSorting;
     use HasUuids;
 
     /**

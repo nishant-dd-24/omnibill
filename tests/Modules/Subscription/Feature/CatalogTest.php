@@ -21,7 +21,7 @@ it('can list active plans for tenants', function () {
 
     $user = User::factory()->create(['tenant_id' => Str::uuid()->toString()]);
 
-    $response = $this->actingAs($user)->getJson('/api/plans');
+    $response = $this->actingAs($user)->getJson('/api/v1/plans');
 
     $response->assertStatus(200)
         ->assertJsonPath('data.0.id', $plan->id)
@@ -32,7 +32,7 @@ it('can create a plan as super admin', function () {
     /** @var TestCase $this */
     $user = User::factory()->create(['tenant_id' => Str::uuid()->toString()]);
 
-    $response = $this->actingAs($user)->postJson('/api/admin/plans', [
+    $response = $this->actingAs($user)->postJson('/api/v1/admin/plans', [
         'name' => 'Pro Plan',
         'description' => 'Pro features',
         'is_active' => true,

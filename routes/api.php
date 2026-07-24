@@ -8,18 +8,20 @@ use Modules\Subscription\Http\Controllers\AdminCatalogController;
 use Modules\Subscription\Http\Controllers\CatalogController;
 use Modules\Webhook\Http\Controllers\StripeWebhookController;
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('v1')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
 
-// Webhooks
-Route::post('/webhooks/stripe', StripeWebhookController::class);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [AuthController::class, 'me']);
+    // Webhooks
+    Route::post('/webhooks/stripe', StripeWebhookController::class);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me', [AuthController::class, 'me']);
 
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('customers', CustomerController::class);
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('customers', CustomerController::class);
 
-    // Catalog
-    Route::get('/plans', [CatalogController::class, 'index']);
-    Route::post('/admin/plans', [AdminCatalogController::class, 'store']);
+        // Catalog
+        Route::get('/plans', [CatalogController::class, 'index']);
+        Route::post('/admin/plans', [AdminCatalogController::class, 'store']);
+    });
 });

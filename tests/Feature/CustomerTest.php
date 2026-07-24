@@ -21,7 +21,7 @@ it('can list customers for a tenant', function () {
     Customer::factory()->count(3)->create(['tenant_id' => $tenant->id]);
     Customer::factory()->count(2)->create(['tenant_id' => Tenant::create(['name' => 'Other', 'status' => 'Active'])->id]);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->getJson('/api/customers');
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->getJson('/api/v1/customers');
 
     $response->assertStatus(200)
         ->assertJsonCount(3, 'data');
@@ -35,7 +35,7 @@ it('can create a customer', function () {
 
     Event::fake([CustomerCreated::class]);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->postJson('/api/customers', [
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->postJson('/api/v1/customers', [
         'name' => 'John Doe',
         'email' => 'john@example.com',
         'stripe_id' => 'cus_12345',
@@ -58,7 +58,7 @@ it('requires valid data for customer creation', function () {
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
     $this->actingAs($user);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->postJson('/api/customers', [
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->postJson('/api/v1/customers', [
         'name' => '',
         'email' => 'not-an-email',
     ]);
@@ -75,7 +75,7 @@ it('requires valid data for customer update', function () {
 
     $customer = Customer::factory()->create(['tenant_id' => $tenant->id]);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->putJson("/api/customers/{$customer->id}", [
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->putJson("/api/v1/customers/{$customer->id}", [
         'name' => '',
         'email' => 'not-an-email',
     ]);
@@ -93,7 +93,7 @@ it('prevents cross-tenant access when getting a customer', function () {
     $otherTenant = Tenant::create(['name' => 'Other Tenant', 'status' => 'Active']);
     $otherCustomer = Customer::factory()->create(['tenant_id' => $otherTenant->id]);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->getJson("/api/customers/{$otherCustomer->id}");
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->getJson("/api/v1/customers/{$otherCustomer->id}");
 
     $response->assertStatus(404);
 });
@@ -107,7 +107,7 @@ it('prevents cross-tenant access when updating a customer', function () {
     $otherTenant = Tenant::create(['name' => 'Other Tenant', 'status' => 'Active']);
     $otherCustomer = Customer::factory()->create(['tenant_id' => $otherTenant->id]);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->putJson("/api/customers/{$otherCustomer->id}", [
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->putJson("/api/v1/customers/{$otherCustomer->id}", [
         'name' => 'Hacked Name',
     ]);
 
@@ -123,7 +123,7 @@ it('prevents cross-tenant access when deleting a customer', function () {
     $otherTenant = Tenant::create(['name' => 'Other Tenant', 'status' => 'Active']);
     $otherCustomer = Customer::factory()->create(['tenant_id' => $otherTenant->id]);
 
-    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->deleteJson("/api/customers/{$otherCustomer->id}");
+    $response = $this->withHeader('X-Tenant-ID', $tenant->id)->deleteJson("/api/v1/customers/{$otherCustomer->id}");
 
     $response->assertStatus(404);
 });

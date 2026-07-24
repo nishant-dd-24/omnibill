@@ -26,7 +26,7 @@ class UserControllerTest extends TestCase
         ]);
         $admin->roles()->create(['role' => Role::TENANT_ADMIN->value]);
 
-        $response = $this->actingAs($admin)->postJson('/api/users', [
+        $response = $this->actingAs($admin)->postJson('/api/v1/users', [
             'name' => 'New User',
             'email' => 'new@example.com',
             'password' => 'password123',

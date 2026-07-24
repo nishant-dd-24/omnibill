@@ -42,7 +42,7 @@ class StripeWebhookControllerTest extends TestCase
         $signature = hash_hmac('sha256', $signedPayload, $secret);
         $sigHeader = "t={$timestamp},v1={$signature}";
 
-        $response = $this->call('POST', '/api/webhooks/stripe', [], [], [], [
+        $response = $this->call('POST', '/api/v1/webhooks/stripe', [], [], [], [
             'HTTP_Stripe-Signature' => $sigHeader,
             'CONTENT_TYPE' => 'application/json',
         ], $payload);
@@ -72,7 +72,7 @@ class StripeWebhookControllerTest extends TestCase
             'type' => 'payment_intent.succeeded',
         ]);
 
-        $response = $this->call('POST', '/api/webhooks/stripe', [], [], [], [
+        $response = $this->call('POST', '/api/v1/webhooks/stripe', [], [], [], [
             'HTTP_Stripe-Signature' => 'invalid_signature',
             'CONTENT_TYPE' => 'application/json',
         ], $payload);
@@ -109,7 +109,7 @@ class StripeWebhookControllerTest extends TestCase
         $signature = hash_hmac('sha256', $signedPayload, $secret);
         $sigHeader = "t={$timestamp},v1={$signature}";
 
-        $response = $this->call('POST', '/api/webhooks/stripe', [], [], [], [
+        $response = $this->call('POST', '/api/v1/webhooks/stripe', [], [], [], [
             'HTTP_Stripe-Signature' => $sigHeader,
             'CONTENT_TYPE' => 'application/json',
         ], $payload);
